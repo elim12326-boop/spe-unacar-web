@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio de Comercios - SPE</title>
+    
+    <!-- FUENTES ORIGINALES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background-color: #f1f5f9; 
+            color: #000000; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* CABECERA CONTINUA EN AZUL INSTITUCIONAL */
+        .unified-header {
+            background-color: #003366;
+            color: #ffffff;
+            width: 100%;
+            border-bottom: 2px solid #002244;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.15);
+        }
+
+        /* NAVBAR SUPERIOR COMPACTO (MÁS PEGADO HACIA ARRIBA) */
+        .navbar {
+            padding: 12px 40px 0 40px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover { 
+            color: #d0e4ff; 
+        }
+        .nav-link.active-link {
+            color: #ffffff;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+        
+        /* BOTÓN GET CARD ORIGINAL */
+        .btn-get-card {
+            background-color: #002244;
+            color: #ffffff;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 10px 24px;
+            border-radius: 0;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: inline-block;
+            transition: background 0.2s ease, transform 0.1s ease;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+        }
+        .btn-get-card:hover { 
+            background-color: #001122; 
+            border-color: #ffffff;
+        }
+
+        /* FRANJA PRINCIPAL ELEVADA HACIA ARRIBA */
+        .page-header-grid {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            padding: 0 20px 20px 20px;
+            margin-top: -6px;
+            width: 100%;
+            min-height: 120px;
+        }
+
+        /* LOGOS EN FORMATO NATURAL (SIN FILTROS QUE EMPASTEN O DEFORMEN) */
+        .header-col-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            justify-content: flex-start;
+            padding-left: 10px;
+        }
+        .header-logo-img {
+            height: 90px;
+            width: auto;
+            max-height: 90px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
+        }
+        .header-logo-divider {
+            height: 65px;
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* COLUMNA CENTRAL CENTRADA EN EL EJE MEDIO Y ELEVADA */
+        .header-col-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            justify-self: center;
+            height: 100%;
+            margin: 0;
+            padding: 0 20px;
+            white-space: nowrap;
+        }
+        .sub-header-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: #d0e4ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 6px 0;
+            padding: 0;
+            line-height: 1;
+        }
+        .header-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 4rem;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+        }
+
+        /* COLUMNA DERECHA BALANCEADORA */
+        .header-col-right {
+            display: flex;
+            justify-content: flex-end;
+            visibility: hidden;
+            height: 100%;
+        }
+
+        /* LAYOUT PRINCIPAL */
+        .main-layout {
+            display: flex;
+            gap: 40px;
+            padding: 35px 60px 60px 60px;
+            align-items: flex-start;
+        }
+
+        /* PANEL LATERAL DE FILTROS */
+        .sidebar-filters {
+            width: 260px;
+            flex-shrink: 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 25px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .filter-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.8rem;
+            color: #003366;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .filter-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .filter-item a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #000000;
+            text-decoration: none;
+            text-transform: uppercase;
+            display: block;
+            transition: color 0.2s;
+        }
+        .filter-item a:hover, .filter-item.active a {
+            color: #003366;
+            text-decoration: underline;
+        }
+
+        /* ÁREA DE CONTENIDO DERECHA */
+        .content-area {
+            flex-grow: 1;
+        }
+
+        /* BARRA SUPERIOR: BUSCADOR + CONTADOR */
+        .top-bar-tools {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .search-form {
+            display: flex;
+            flex: 1;
+            max-width: 500px;
+        }
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1.5px solid #000000;
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            background: #ffffff;
+        }
+        .btn-search {
+            background: #003366;
+            color: #ffffff;
+            border: 1.5px solid #003366;
+            border-radius: 0 6px 6px 0;
+            padding: 0 22px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-search:hover { background: #002244; border-color: #002244; }
+
+        .counter-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #000000;
+            letter-spacing: 0.5px;
+        }
+
+        /* GRID DE LOCALES */
+        .directory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        /* TARJETA EN BLANCO PURO CON RELIEVE Y BORDE SUTIL */
+        .card {
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        /* FOTO DE PORTADA CON ZOOM SCALE-105 AL HOVER */
+        .card-header-img {
+            position: relative;
+            width: 100%;
+            height: 170px;
+            background-color: #f0f0f0;
+            border-top-left-radius: 17px;
+            border-top-right-radius: 17px;
+            overflow: hidden;
+        }
+        .card-header-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.35s ease;
+        }
+        .card:hover .card-header-img img {
+            transform: scale(1.05);
+        }
+
+        /* BADGE DE DESCUENTO DESTACADO */
+        .discount-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background-color: #003366;
+            color: #ffffff;
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+
+        /* BADGE DE NUEVO CONVENIO */
+        .badge-new-convenio {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+
+        /* LOGO FLOTANTE COMO CÍRCULO COMPLETO CON RELIEVE Y BORDE GRUESO */
+        .card-avatar-badge {
+            position: absolute;
+            top: 135px;
+            left: 20px;
+            width: 70px;
+            height: 70px;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 4px solid #ffffff;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 10;
+        }
+        .card-avatar-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-avatar-placeholder {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #003366;
+        }
+
+        /* CUERPO DE LA TARJETA */
+        .card-body {
+            padding: 44px 20px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+            background: #ffffff;
+            border-bottom-left-radius: 17px;
+            border-bottom-right-radius: 17px;
+        }
+
+        .badge-cat {
+            display: inline-block;
+            align-self: flex-start;
+            border: 1px solid #003366;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            background: #e8f0fe;
+            color: #003366;
+        }
+
+        .card-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .card-location {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: #555555;
+            margin-bottom: 10px;
+        }
+
+        /* RECORTE A 2 LÍNEAS */
+        .card-desc {
+            font-size: 0.85rem;
+            color: #333333;
+            margin-bottom: 20px;
+            line-height: 1.4em;
+            height: 2.8em;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* BOTÓN ANCLADO AL FONDO */
+        .btn-card {
+            display: block;
+            text-align: center;
+            background: #003366;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            transition: background 0.2s;
+            margin-top: auto;
+        }
+        .btn-card:hover { background: #002244; }
+
+        /* SKELETON LOADER */
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+            margin-bottom: 20px;
+        }
+        .skeleton-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            background: #ffffff;
+            overflow: hidden;
+            position: relative;
+            height: 380px;
+        }
+        .skeleton-shimmer {
+            animation: skeleton-pulse 1.5s infinite ease-in-out;
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+        }
+        @keyframes skeleton-pulse {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .skeleton-img {
+            width: 100%;
+            height: 170px;
+        }
+        .skeleton-avatar {
+            position: absolute;
+            top: 135px;
+            left: 20px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 4px solid #ffffff;
+            z-index: 10;
+        }
+        .skeleton-body {
+            padding: 44px 20px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .skeleton-line {
+            height: 12px;
+            border-radius: 6px;
+        }
+        .skeleton-line.w-40 { width: 40%; }
+        .skeleton-line.w-70 { width: 70%; height: 20px; }
+        .skeleton-line.w-90 { width: 90%; }
+        .skeleton-btn {
+            height: 38px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        /* BOTÓN FLOTANTE "VOLVER ARRIBA" */
+        .btn-scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #003366;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+        .btn-scroll-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .btn-scroll-top:hover {
+            transform: translateY(-3px);
+            background-color: #002244;
+        }
+
+        @media (max-width: 950px) {
+            .navbar { padding: 12px 20px 0 20px; }
+            .page-header-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 10px 20px 25px 20px;
+                margin-top: 0;
+                text-align: center;
+            }
+            .header-col-left {
+                justify-content: center;
+                padding-left: 0;
+            }
+            .header-col-right {
+                display: none;
+            }
+            .header-logo-img { height: 75px; max-height: 75px; }
+            .header-logo-divider { height: 50px; }
+            .header-title { font-size: 2.8rem; }
+            .main-layout { padding-left: 20px; padding-right: 20px; flex-direction: column; }
+            .sidebar-filters { width: 100%; }
+            .btn-scroll-top { bottom: 20px; right: 20px; width: 42px; height: 42px; font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABECERA CONTINUA EN AZUL INSTITUCIONAL -->
+    <header class="unified-header">
+        
+        <!-- NAVBAR SUPERIOR CON ENLACES EN SPACE MONO BLANCO Y BOTÓN ORIGINAL -->
+        <nav class="navbar">
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Inicio</a>
+                <a href="/directorio" class="nav-link active-link">Directorio</a>
+                <a href="/credencial" class="btn-get-card">GET CARD</a>
+            </div>
+        </nav>
+
+        <!-- FRANJA PRINCIPAL: LOGOS NÍTIDOS Y TÍTULO ELEVADO -->
+        <div class="page-header-grid">
+            
+            <!-- COLUMNA IZQUIERDA: LOGOS SIN DISTORSIÓN VISUAL -->
+            <div class="header-col-left">
+                <a href="/" title="UNACAR">
+                    <img src="{{ url_for('static', filename='unacar.png') }}" alt="Logo UNACAR" class="header-logo-img">
+                </a>
+                <div class="header-logo-divider"></div>
+                <a href="/" title="SPE">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo SPE" class="header-logo-img">
+                </a>
+            </div>
+
+            <!-- COLUMNA CENTRAL: CENTRADO ABSOLUTO HORIZONTAL Y VERTICAL -->
+            <div class="header-col-center">
+                <p class="sub-header-title">SPE Membership Network</p>
+                <h1 class="header-title">Directorio de Locales</h1>
+            </div>
+
+            <!-- COLUMNA DERECHA: BALANCEADOR ESPACIAL INVISIBLE -->
+            <div class="header-col-right" aria-hidden="true">
+                <div class="header-logo-img" style="width: 220px;"></div>
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- ESTRUCTURA PRINCIPAL -->
+    <div class="main-layout">
+        
+        <!-- SIDEBAR FILTROS -->
+        <aside class="sidebar-filters">
+            <h2 class="filter-title">Filtros</h2>
+            <ul class="filter-list">
+                <li class="filter-item {% if not selected_categoria %}active{% endif %}">
+                    <a href="/directorio">Todas las Categorías</a>
+                </li>
+                {% for cat in categorias %}
+                <li class="filter-item {% if selected_categoria == cat %}active{% endif %}">
+                    <a href="/directorio?categoria={{ cat }}">{{ cat }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO Y GRID DE COMERCIOS -->
+        <main class="content-area">
+            
+            <!-- BUSCADOR Y CONTADOR -->
+            <div class="top-bar-tools">
+                <form method="GET" action="/directorio" class="search-form" id="search-form" onsubmit="return false;">
+                    {% if selected_categoria %}
+                    <input type="hidden" name="categoria" value="{{ selected_categoria }}">
+                    {% endif %}
+                    <input type="text" id="live-search-input" name="q" value="{{ search_query if search_query else '' }}" placeholder="Buscar por comercio o palabra clave..." class="search-input" autocomplete="off">
+                    <button type="button" class="btn-search" onclick="ejecutarFiltroEnVivo()">Buscar</button>
+                </form>
+
+                <div class="counter-text" id="counter-display">
+                    {{ locales|length }} Locales Encontrados
+                </div>
+            </div>
+
+            <!-- SKELETON LOADER PLACEHOLDER -->
+            <div id="skeleton-container" class="skeleton-grid">
+                {% for i in range(6) %}
+                <div class="skeleton-card">
+                    <div class="skeleton-img skeleton-shimmer"></div>
+                    <div class="skeleton-avatar skeleton-shimmer"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton-line w-40 skeleton-shimmer"></div>
+                        <div class="skeleton-line w-70 skeleton-shimmer"></div>
+                        <div class="skeleton-line w-90 skeleton-shimmer"></div>
+                        <div class="skeleton-btn skeleton-shimmer"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- TARJETAS REALES CON AVATAR EN RELIEVE -->
+            <div class="directory-grid" id="directory-grid" style="display: none;">
+                {% for l in locales %}
+                <div class="card local-card-item" 
+                     data-nombre="{{ (l['nombre'] or '')|lower }}"
+                     data-categoria="{{ (l['categoria'] or '')|lower }}"
+                     data-direccion="{{ (l['direccion'] or '')|lower }}"
+                     data-desc="{{ (l['descripcion'] or '')|lower }}">
+                    
+                    <!-- PARTE SUPERIOR: FOTO PORTADA + DESCUENTO + BADGE NUEVO -->
+                    <div class="card-header-img">
+                        {% if l['foto_portada'] %}
+                        <img src="{{ url_for('static', filename='fotos/' + l['foto_portada']) }}" alt="{{ l['nombre'] }}" loading="lazy">
+                        {% elif l['foto'] %}
+                        <img src="{{ url_for('static', filename='fotos/' + l['foto']) }}" alt="{{ l['nombre'] }}" loading="lazy">
+                        {% else %}
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#888; font-family:'Space Mono', monospace; font-size:0.75rem;">SIN IMAGEN</div>
+                        {% endif %}
+
+                        {% if l['descuento'] %}
+                        <span class="discount-tag">
+                            {{ l['descuento'] }}{% if 'OFF' not in l['descuento'].upper() %} OFF{% endif %}
+                        </span>
+                        {% endif %}
+
+                        <!-- BADGE DE NUEVO CONVENIO -->
+                        {% if l['es_nuevo'] %}
+                        <span class="badge-new-convenio">✨ NUEVO</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- AVATAR CIRCULAR FLOTANTE EN RELIEVE -->
+                    <div class="card-avatar-badge">
+                        {% if l['foto_perfil'] %}
+                        <img src="{{ url_for('static', filename='fotos/' + l['foto_perfil']) }}" alt="Logo {{ l['nombre'] }}" loading="lazy">
+                        {% elif l['foto'] %}
+                        <img src="{{ url_for('static', filename='fotos/' + l['foto']) }}" alt="Logo {{ l['nombre'] }}" loading="lazy">
+                        {% else %}
+                        <span class="card-avatar-placeholder">{{ l['nombre'][0] }}</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- CUERPO DE TARJETA -->
+                    <div class="card-body">
+                        <div>
+                            <span class="badge-cat">{{ l['categoria'] }}</span>
+                            <h2 class="card-title">{{ l['nombre'] }}</h2>
+                            
+                            {% if l['direccion'] %}
+                            <p class="card-location">📍 {{ l['direccion'] }}</p>
+                            {% endif %}
+
+                            <p class="card-desc">{{ l['descripcion'] if l['descripcion'] else '' }}</p>
+                        </div>
+
+                        <a href="{{ url_for('perfil', local_id=l['id']) }}" class="btn-card">Ver Detalles</a>
+                    </div>
+                </div>
+                {% else %}
+                <p style="font-family: 'Space Mono', monospace; color: #666;" id="empty-state-msg">No se encontraron locales registrados.</p>
+                {% endfor %}
+            </div>
+
+            <p style="font-family: 'Space Mono', monospace; color: #666; display: none; margin-top: 20px;" id="no-live-results">
+                No se encontraron locales que coincidan con la búsqueda.
+            </p>
+
+        </main>
+    </div>
+
+    <!-- BOTÓN FLOTANTE VOLVER ARRIBA -->
+    <button type="button" class="btn-scroll-top" id="btn-scroll-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" title="Volver arriba">
+        ↑
+    </button>
+
+    <script>
+        // Quitar Skeleton Loader una vez cargados los recursos
+        window.addEventListener('load', () => {
+            const skeleton = document.getElementById('skeleton-container');
+            const grid = document.getElementById('directory-grid');
+            if (skeleton && grid) {
+                skeleton.style.display = 'none';
+                grid.style.display = 'grid';
+            }
+        });
+
+        // Live Search con Debounce de 300 ms
+        const searchInput = document.getElementById('live-search-input');
+        const counterDisplay = document.getElementById('counter-display');
+        const noResultsMsg = document.getElementById('no-live-results');
+        let debounceTimer;
+
+        function normalizarTexto(texto) {
+            return (texto || '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
+
+        function ejecutarFiltroEnVivo() {
+            const query = normalizarTexto(searchInput.value.trim());
+            const cards = document.querySelectorAll('.local-card-item');
+            let visibles = 0;
+
+            cards.forEach(card => {
+                const nombre = normalizarTexto(card.getAttribute('data-nombre'));
+                const categoria = normalizarTexto(card.getAttribute('data-categoria'));
+                const direccion = normalizarTexto(card.getAttribute('data-direccion'));
+                const desc = normalizarTexto(card.getAttribute('data-desc'));
+
+                if (!query || nombre.includes(query) || categoria.includes(query) || direccion.includes(query) || desc.includes(query)) {
+                    card.style.display = 'flex';
+                    visibles++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (counterDisplay) {
+                counterDisplay.textContent = `${visibles} Locales Encontrados`;
+            }
+
+            if (noResultsMsg) {
+                noResultsMsg.style.display = (visibles === 0 && cards.length > 0) ? 'block' : 'none';
+            }
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(ejecutarFiltroEnVivo, 300);
+            });
+        }
+
+        // Control de visibilidad del Botón "Volver arriba"
+        const btnScrollTop = document.getElementById('btn-scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                btnScrollTop.classList.add('visible');
+            } else {
+                btnScrollTop.classList.remove('visible');
+            }
+        });
+    </script>
+
+</body>
+</html>

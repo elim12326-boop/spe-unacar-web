@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ local['nombre'] }} - Directorio SPE</title>
+    
+    <!-- FUENTES ORIGINALES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* 1. FONDO GENERAL NEUTRO SUAVE PARA CONTRASTE Y PROFUNDIDAD */
+        body { 
+            background-color: #f1f5f9; 
+            color: #1a1a1a; 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* CABECERA CON CURSOR ZOOM-IN PARA LIGHTBOX */
+        .profile-hero {
+            position: relative;
+            width: 100%;
+            height: 560px;
+            background-color: #003366;
+            overflow: hidden;
+            cursor: zoom-in;
+        }
+        .profile-hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* NAVBAR SUPERPUESTA */
+        .navbar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 60px 10px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 100%);
+            cursor: default;
+        }
+        .navbar-overlay .logo-img { height: 40px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        .nav-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        .nav-link:hover { color: #d0e4ff; }
+        
+        .btn-get-card {
+            background-color: #003366;
+            color: #ffffff;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-get-card:hover { background-color: #002244; }
+
+        /* BREADCRUMBS */
+        .breadcrumbs-bar {
+            position: absolute;
+            top: 75px;
+            left: 60px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.75);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            cursor: default;
+        }
+        .breadcrumbs-bar a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .breadcrumbs-bar a:hover {
+            color: #d0e4ff;
+            text-decoration: underline;
+        }
+        .breadcrumbs-separator {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .breadcrumbs-current {
+            color: #d0e4ff;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* DEGRADADO OSCURO */
+        .profile-hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 40px 60px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0) 100%);
+            display: flex;
+            align-items: flex-end;
+            z-index: 5;
+        }
+
+        /* TARJETA FLOTANTE DE MARCA */
+        .hero-brand-card {
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 24px 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            max-width: 900px;
+            position: relative;
+            cursor: default;
+        }
+
+        /* 2. LOGO FLOTANTE COMO CÍRCULO COMPLETO CON RELIEVE Y BORDE GRUESO */
+        .profile-avatar {
+            width: 110px;
+            height: 110px;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 4px solid #ffffff;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            cursor: zoom-in;
+            transition: transform 0.2s ease;
+            z-index: 10;
+        }
+        .profile-avatar:hover {
+            transform: scale(1.04);
+        }
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .profile-avatar-placeholder {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.5rem;
+            color: #003366;
+        }
+
+        .profile-header-info {
+            color: #ffffff;
+            flex-grow: 1;
+        }
+        .profile-badges-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .profile-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .badge-pill {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .btn-share {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .btn-share:hover {
+            background: #ffffff;
+            color: #003366;
+        }
+        .share-tooltip {
+            position: absolute;
+            bottom: -32px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000000;
+            color: #ffffff;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            display: none;
+        }
+
+        .profile-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .profile-address-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .profile-address {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            opacity: 0.95;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .btn-copy-address {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-copy-address:hover {
+            background: #ffffff;
+            color: #003366;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px 60px 20px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        /* ACCIONES EXTRA */
+        .extra-actions-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .btn-extra-action {
+            flex: 1;
+            min-width: 200px;
+            background: #ffffff;
+            color: #003366;
+            border: 2px solid #003366;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px #003366;
+            transition: all 0.2s ease;
+        }
+        .btn-extra-action:hover {
+            background: #003366;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        .btn-extra-action.primary-action {
+            background: #003366;
+            color: #ffffff;
+            border: 2px solid #000000;
+            box-shadow: 3px 3px 0px #000000;
+        }
+        .btn-extra-action.primary-action:hover {
+            background: #001f3f;
+        }
+
+        .btn-save-vcf {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            text-align: center;
+            background-color: #ffffff;
+            color: #003366;
+            border: 1.5px solid #003366;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-bottom: 15px;
+            box-shadow: 2px 2px 0px #003366;
+            transition: all 0.2s ease;
+        }
+        .btn-save-vcf:hover {
+            background-color: #003366;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* 1. TARJETA DEL DESCUENTO ESTILO CUPÓN EN BLANCO PURO CON BORDE */
+        .coupon-banner {
+            position: relative;
+            background: #ffffff;
+            border: 2px dashed #003366;
+            border-radius: 14px;
+            padding: 24px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            gap: 20px;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+        .coupon-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        .coupon-badge-tag {
+            background: #003366;
+            color: #ffffff;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .coupon-percent {
+            font-family: 'Anton', sans-serif;
+            font-size: 3.6rem;
+            color: #003366;
+            line-height: 1;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        .coupon-info h3 {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.5rem;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .coupon-info p {
+            font-size: 0.88rem;
+            color: #555555;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-use-discount {
+            background-color: #003366;
+            color: #ffffff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 3px 3px 0px #000000;
+        }
+        .btn-use-discount:hover { background-color: #001f3f; transform: translateY(-2px); }
+
+        /* GRID Y STICKY SIDEBAR */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+            gap: 30px;
+            align-items: start;
+            width: 100%;
+        }
+
+        .main-column {
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .sidebar-column {
+            min-width: 0;
+            max-width: 100%;
+            position: sticky;
+            top: 25px;
+        }
+
+        /* 1. TARJETAS DE CONTENIDO EN BLANCO PURO CON BORDE SUTIL */
+        .content-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            max-width: 100%;
+            box-sizing: border-box;
+            transition: box-shadow 0.3s ease;
+        }
+        .content-card:hover {
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+        .content-card h3 {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        /* TEXTO COLAPSABLE "LEER MÁS" EN SOBRE NOSOTROS */
+        .collapsible-text-wrapper {
+            position: relative;
+            max-height: 95px;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .collapsible-text-wrapper.expanded {
+            max-height: 1200px;
+        }
+        .collapsible-text-wrapper p {
+            font-size: 0.95rem;
+            color: #444444;
+            line-height: 1.6;
+            margin-bottom: 0;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .text-fade-mask {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff 90%);
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .collapsible-text-wrapper.expanded .text-fade-mask {
+            display: none;
+        }
+        .btn-toggle-readmore {
+            background: none;
+            border: none;
+            color: #003366;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 10px;
+            padding: 4px 0;
+            display: none;
+        }
+        .btn-toggle-readmore:hover {
+            text-decoration: underline;
+        }
+
+        /* ESPECIALES CON SCROLL HORIZONTAL AISLADO */
+        .specials-card {
+            overflow: hidden;
+        }
+        .specials-scroll-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 16px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            width: 100%;
+            max-width: 100%;
+            padding-bottom: 12px;
+            margin-top: 15px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .specials-scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .specials-scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .specials-scroll-container::-webkit-scrollbar-thumb {
+            background: #003366;
+            border-radius: 10px;
+        }
+
+        .special-product-card {
+            flex: 0 0 240px;
+            width: 240px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .special-product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            border-color: #003366;
+        }
+        .special-product-img {
+            width: 100%;
+            height: 135px;
+            object-fit: cover;
+            background-color: #e9ecef;
+            display: block;
+        }
+        .special-product-body {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+        .special-product-body h4 {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.15rem;
+            color: #003366;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .special-product-body p {
+            font-size: 0.82rem;
+            color: #555555;
+            margin-bottom: 10px;
+            line-height: 1.35;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .special-price-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #28a745;
+            text-transform: uppercase;
+            background: #eafaf1;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            align-self: flex-start;
+        }
+
+        /* HORARIOS */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+        .status-open {
+            background: #e6f4ea;
+            color: #137333;
+            border: 1px solid #ceead6;
+        }
+        .status-closed {
+            background: #fce8e6;
+            color: #c5221f;
+            border: 1px solid #fad2cf;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            display: inline-block;
+        }
+
+        .quick-data-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #e2e8f0;
+        }
+        .quick-badge {
+            background-color: #f8fafc;
+            color: #333333;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* GALERÍA */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+        }
+        .gallery-item {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item img:hover {
+            transform: scale(1.06);
+        }
+
+        /* CONTACTO Y REDES */
+        .btn-whatsapp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            text-align: center;
+            background-color: #25D366;
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.25);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-whatsapp:hover { background-color: #20ba5a; transform: translateY(-2px); }
+
+        .social-icons-row {
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .btn-social-icon {
+            flex: 1;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8fafc;
+            color: #003366;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-social-icon:hover {
+            background-color: #003366;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        .social-icon-svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .map-wrapper {
+            margin-top: 15px;
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .btn-directions {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #003366;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            margin-top: 12px;
+            transition: background 0.2s;
+        }
+        .btn-directions:hover { background: #002244; }
+
+        .conditions-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .conditions-list li {
+            font-size: 0.9rem;
+            color: #444444;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        /* 1. LOCALES SIMILARES EN BLANCO PURO CON BORDE SUTIL */
+        .similar-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #cbd5e1;
+        }
+        .similar-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.2rem;
+            color: #003366;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+        }
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .similar-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            background: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .similar-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+        .similar-card-img {
+            width: 100%;
+            height: 150px;
+            background-color: #f1f5f9;
+            position: relative;
+        }
+        .similar-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .similar-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+        .similar-card-body h4 {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            color: #1a1a1a;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .btn-view-similar {
+            display: block;
+            text-align: center;
+            background: #003366;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+        /* MODALES */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-box {
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 16px;
+            box-shadow: 8px 8px 0px #000000;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            font-size: 24px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #000000;
+            font-family: 'Space Mono', monospace;
+        }
+        .modal-discount-header {
+            font-family: 'Anton', sans-serif;
+            font-size: 3rem;
+            color: #003366;
+            line-height: 1;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .modal-notice-box {
+            background: #e8f0fe;
+            border-left: 4px solid #003366;
+            padding: 12px;
+            margin-top: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #003366;
+        }
+
+        /* MODAL DEL ESPECIAL */
+        .special-modal-box {
+            max-width: 560px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 28px;
+        }
+        .special-modal-img {
+            width: 100%;
+            max-height: 240px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .special-modal-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 2rem;
+            color: #003366;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 6px;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .special-modal-price {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #28a745;
+            text-transform: uppercase;
+            background: #eafaf1;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .special-modal-desc {
+            font-size: 0.95rem;
+            color: #333333;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+        .special-modal-terms {
+            background: #f8fafc;
+            border-left: 3px solid #003366;
+            padding: 12px 14px;
+            font-size: 0.85rem;
+            color: #555555;
+            margin-bottom: 20px;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            white-space: pre-wrap;
+            line-height: 1.45;
+        }
+        .btn-ask-special {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background-color: #25D366;
+            color: #ffffff;
+            padding: 13px;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            box-shadow: 2px 2px 0px #000000;
+            transition: background 0.2s;
+        }
+        .btn-ask-special:hover {
+            background-color: #20ba5a;
+        }
+
+        /* BARRA FIJA EN MÓVILES */
+        .mobile-sticky-bar {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: #ffffff;
+            border-top: 2px solid #000000;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            z-index: 1500;
+            padding: 10px 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .mobile-sticky-left {
+            display: flex;
+            flex-direction: column;
+        }
+        .mobile-sticky-discount {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.6rem;
+            color: #003366;
+            line-height: 1;
+        }
+        .mobile-sticky-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #555555;
+        }
+        .mobile-sticky-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-mobile-discount {
+            background: #003366;
+            color: #ffffff;
+            border: 1.5px solid #000000;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px #000000;
+        }
+        .btn-mobile-wpp {
+            background: #25D366;
+            color: #ffffff;
+            border: 1.5px solid #000000;
+            width: 38px;
+            height: 38px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        /* LIGHTBOX MODAL */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 2500;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 8px;
+            box-shadow: 0 0 25px rgba(255,255,255,0.2);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: #ffffff;
+            font-size: 35px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-sticky-bar { display: flex; }
+            .container { padding-bottom: 90px; }
+            .breadcrumbs-bar { left: 20px; top: 70px; }
+        }
+
+        @media (max-width: 900px) {
+            .profile-grid { grid-template-columns: 1fr; }
+            .sidebar-column { position: static; }
+            .profile-hero { height: auto; min-height: 440px; }
+            .hero-brand-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .navbar-overlay, .profile-hero-overlay { padding-left: 20px; padding-right: 20px; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .coupon-banner { flex-direction: column; align-items: flex-start; }
+            .special-product-card { flex: 0 0 210px; width: 210px; }
+            .extra-actions-bar { flex-direction: column; }
+            .btn-extra-action { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO BANNER CON APERTURA EN LIGHTBOX EN ZONAS LIBRES -->
+    {% set portada_src = url_for('static', filename='fotos/' + local['foto_portada']) if local['foto_portada'] else (url_for('static', filename='fotos/' + local['foto']) if local['foto'] else '') %}
+
+    <div class="profile-hero" {% if portada_src %}onclick="openLightbox('{{ portada_src }}')"{% endif %} title="Toca para ampliar imagen de portada">
+        <nav class="navbar-overlay" onclick="event.stopPropagation()">
+            <a href="/">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo SPE" class="logo-img">
+            </a>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Inicio</a>
+                <a href="/directorio" class="nav-link">Directorio</a>
+                <a href="#" class="btn-get-card">Get Card</a>
+            </div>
+        </nav>
+
+        <!-- BREADCRUMBS -->
+        <div class="breadcrumbs-bar" onclick="event.stopPropagation()">
+            <a href="/">Inicio</a>
+            <span class="breadcrumbs-separator">/</span>
+            <a href="/directorio">Directorio</a>
+            {% if local['categoria'] %}
+            <span class="breadcrumbs-separator">/</span>
+            <a href="/directorio?categoria={{ local['categoria'] }}">{{ local['categoria'] }}</a>
+            {% endif %}
+            <span class="breadcrumbs-separator">/</span>
+            <span class="breadcrumbs-current">{{ local['nombre'] }}</span>
+        </div>
+
+        {% if local['foto_portada'] %}
+        <img src="{{ url_for('static', filename='fotos/' + local['foto_portada']) }}" alt="{{ local['nombre'] }}" class="profile-hero-img">
+        {% elif local['foto'] %}
+        <img src="{{ url_for('static', filename='fotos/' + local['foto']) }}" alt="{{ local['nombre'] }}" class="profile-hero-img">
+        {% else %}
+        <div style="width:100%; height:100%; background:#002244;"></div>
+        {% endif %}
+        
+        <!-- DEGRADADO Y BLOQUE TRASLÚCIDO DE MARCA -->
+        <div class="profile-hero-overlay" onclick="event.stopPropagation()">
+            <div class="hero-brand-card">
+                
+                <!-- 2. FOTO DE PERFIL COMO CÍRCULO COMPLETO CON RELIEVE Y BORDE DE 4PX -->
+                {% set avatar_src = url_for('static', filename='fotos/' + local['foto_perfil']) if local['foto_perfil'] else (url_for('static', filename='fotos/' + local['foto']) if local['foto'] else '') %}
+                
+                <div class="profile-avatar" {% if avatar_src %}onclick="openLightbox('{{ avatar_src }}')"{% endif %} title="Toca para ampliar logo">
+                    {% if local['foto_perfil'] %}
+                    <img src="{{ url_for('static', filename='fotos/' + local['foto_perfil']) }}" alt="Logo {{ local['nombre'] }}">
+                    {% elif local['foto'] %}
+                    <img src="{{ url_for('static', filename='fotos/' + local['foto']) }}" alt="Logo {{ local['nombre'] }}">
+                    {% else %}
+                    <span class="profile-avatar-placeholder">{{ local['nombre'][0] }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="profile-header-info">
+                    <div class="profile-badges-row">
+                        <div class="profile-badges">
+                            {% if local['categoria'] %}
+                            <span class="badge-pill">{{ local['categoria'] }}</span>
+                            {% endif %}
+                            {% if local['rango_precio'] %}
+                            <span class="badge-pill">{{ local['rango_precio'] }}</span>
+                            {% endif %}
+                        </div>
+
+                        <button type="button" class="btn-share" onclick="compartirLocal()">
+                            🔗 Compartir
+                            <span class="share-tooltip" id="share-tooltip">¡Enlace copiado!</span>
+                        </button>
+                    </div>
+
+                    <h1 class="profile-title">{{ local['nombre'] }}</h1>
+                    
+                    {% if local['direccion'] %}
+                    <div class="profile-address-box">
+                        <p class="profile-address">📍 {{ local['direccion'] }}</p>
+                        <button type="button" class="btn-copy-address" id="btn-copy-hero" onclick="copiarTexto('{{ local['direccion'] }}', 'btn-copy-hero')" title="Copiar dirección">
+                            📋 Copiar
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- BOTONES CONDICIONALES: MENÚ Y CITAS -->
+        {% if local['archivo_menu'] or local['enlace_citas'] %}
+        <div class="extra-actions-bar">
+            {% if local['archivo_menu'] %}
+                {% set menu_url = url_for('static', filename='fotos/' + local['archivo_menu']) %}
+                {% if local['archivo_menu'].lower().endswith('.pdf') %}
+                <a href="{{ menu_url }}" target="_blank" class="btn-extra-action">
+                    📋 Ver Menú / Catálogo (PDF)
+                </a>
+                {% else %}
+                <button type="button" class="btn-extra-action" onclick="openLightbox('{{ menu_url }}')">
+                    📋 Ver Menú / Catálogo
+                </button>
+                {% endif %}
+            {% endif %}
+
+            {% if local['enlace_citas'] %}
+            <a href="{{ local['enlace_citas'] if local['enlace_citas'].startswith('http') else 'https://' + local['enlace_citas'] }}" target="_blank" class="btn-extra-action primary-action">
+                📅 Agendar Cita / Reservar
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- TARJETA DEL DESCUENTO ESTILO CUPÓN / VOUCHER -->
+        {% if local['descuento'] %}
+        <div class="coupon-banner">
+            <div class="coupon-left">
+                <div class="coupon-percent">{{ local['descuento'] }}</div>
+                <div class="coupon-info">
+                    <div class="coupon-badge-tag">BENEFICIO EXCLUSIVO SPE</div>
+                    <h3>Descuento en Establecimiento</h3>
+                    <p>Presenta tu membresía física vigente de SPE en caja para hacer válido tu beneficio.</p>
+                </div>
+            </div>
+            <button type="button" class="btn-use-discount" onclick="abrirModalDescuento()">
+                Usar Descuento
+            </button>
+        </div>
+        {% endif %}
+
+        <div class="profile-grid">
+            
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="main-column">
+                
+                <!-- ESPECIALES: SE OCULTA SI NO HAY ESPECIALES -->
+                {% if especiales and especiales|length > 0 %}
+                <div class="content-card specials-card">
+                    <h3>{{ local['titulo_especiales'] if local['titulo_especiales'] else 'Especiales para Estudiantes' }}</h3>
+                    <div class="specials-scroll-container">
+                        {% for esp in especiales %}
+                        {% set esp_foto = url_for('static', filename='fotos/' + esp['foto']) if esp['foto'] else '' %}
+                        <div class="special-product-card" 
+                             data-titulo="{{ esp['titulo']|e }}"
+                             data-desc="{{ (esp['descripcion'] or '')|e }}"
+                             data-precio="{{ (esp['precio'] or '')|e }}"
+                             data-terminos="{{ (esp['terminos'] or '')|e }}"
+                             data-foto="{{ esp_foto }}"
+                             onclick="abrirModalEspecial(this)">
+                            {% if esp['foto'] %}
+                            <img src="{{ esp_foto }}" alt="{{ esp['titulo'] }}" class="special-product-img">
+                            {% else %}
+                            <div class="special-product-img" style="display:flex; align-items:center; justify-content:center; color:#999; font-size:12px; font-family:'Space Mono',monospace;">SPE ESPECIAL</div>
+                            {% endif %}
+                            
+                            <div class="special-product-body">
+                                <div>
+                                    <h4>{{ esp['titulo'] }}</h4>
+                                    {% if esp['descripcion'] %}
+                                    <p>{{ esp['descripcion'] }}</p>
+                                    {% endif %}
+                                </div>
+                                {% if esp['precio'] %}
+                                <span class="special-price-tag">{{ esp['precio'] }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- SOBRE NOSOTROS CON TEXTO COLAPSABLE "LEER MÁS" -->
+                <div class="content-card">
+                    <h3>Sobre nosotros</h3>
+                    <div class="collapsible-text-wrapper" id="about-text-wrapper">
+                        <p id="about-text-p">{{ local['descripcion'] if local['descripcion'] else 'No hay descripción detallada registrada para este local por el momento.' }}</p>
+                        <div class="text-fade-mask" id="about-fade-mask"></div>
+                    </div>
+                    <button type="button" class="btn-toggle-readmore" id="btn-readmore" onclick="toggleReadMore()">Leer más ▼</button>
+                    
+                    {% if servicios_lista and servicios_lista|length > 0 %}
+                    <div class="quick-data-bar">
+                        {% for s in servicios_lista %}
+                        <span class="quick-badge">✔ {{ s }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- GALERÍA DE FOTOS CON ZOOM Y LIGHTBOX -->
+                {% if fotos_galeria and fotos_galeria|length > 0 %}
+                <div class="content-card">
+                    <h3>Galería de fotos</h3>
+                    <div class="gallery-grid">
+                        {% for g in fotos_galeria %}
+                        <div class="gallery-item" onclick="openLightbox('{{ url_for('static', filename='fotos/' + g['foto']) }}')">
+                            <img src="{{ url_for('static', filename='fotos/' + g['foto']) }}" alt="Foto de {{ local['nombre'] }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <!-- COLUMNA DERECHA (STICKY SIDEBAR) -->
+            <div class="sidebar-column">
+                
+                <!-- CONTACTO -->
+                <div class="content-card">
+                    <h3>Contacto</h3>
+                    
+                    {% if local['telefono'] %}
+                    <a href="{{ wpp_url }}" target="_blank" class="btn-whatsapp">
+                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.935 2.796.935 3.183 0 5.769-2.587 5.77-5.766.001-3.187-2.575-5.77-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.072-2.029-.479-.988-.41-1.637-.996-2.096-1.58-.62-.789-1.004-1.748-1.004-2.736 0-1.144.593-1.708.804-1.939.21-.23.458-.288.612-.288.153 0 .306.002.436.012.137.01.32-.052.5.383.188.452.641 1.564.697 1.679.057.115.096.25.019.403-.076.153-.115.249-.23.383-.114.135-.24.3-.343.403-.115.115-.235.24-.101.47.134.23.596.983 1.28 1.592.88.784 1.623 1.026 1.853 1.14.23.115.364.096.5-.058.134-.153.575-.67.728-.9.153-.23.307-.192.518-.115.21.077 1.34.632 1.57.747.23.115.383.172.44.269.058.096.058.556-.086.961zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.436 5.176L2 22l4.954-1.399C8.423 21.492 10.148 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                        WhatsApp
+                    </a>
+
+                    <button type="button" class="btn-save-vcf" onclick="descargarVCard('{{ local['nombre'] }}', '{{ local['telefono'] }}')">
+                        👤 Guardar Contacto
+                    </button>
+                    {% endif %}
+
+                    <div class="social-icons-row">
+                        {% if local['facebook'] %}
+                        <a href="{{ local['facebook'] if local['facebook'].startswith('http') else 'https://facebook.com/' + local['facebook'] }}" target="_blank" class="btn-social-icon" title="Facebook">
+                            <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                        </a>
+                        {% endif %}
+
+                        {% if local['instagram'] %}
+                        <a href="{{ local['instagram'] if local['instagram'].startswith('http') else 'https://instagram.com/' + local['instagram'].replace('@','') }}" target="_blank" class="btn-social-icon" title="Instagram">
+                            <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        {% endif %}
+
+                        {% if local['tiktok'] %}
+                        <a href="{{ local['tiktok'] if local['tiktok'].startswith('http') else 'https://tiktok.com/@' + local['tiktok'].replace('@','') }}" target="_blank" class="btn-social-icon" title="TikTok">
+                            <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.86 4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-.04-4.52z"/></svg>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- HORARIOS -->
+                {% if local['horarios'] %}
+                <div class="content-card">
+                    <h3>Horarios</h3>
+                    <div class="status-badge status-closed" id="dynamic-status-badge">
+                        <span class="status-dot"></span> <span id="status-text">Calculando...</span>
+                    </div>
+                    <p style="margin-bottom:0; font-family:'Space Mono',monospace; font-size:0.85rem; white-space: pre-line;">{{ local['horarios'] }}</p>
+                </div>
+                {% endif %}
+
+                <!-- UBICACIÓN -->
+                <div class="content-card">
+                    <h3>📍 Ubicación</h3>
+                    {% if local['direccion'] %}
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom: 10px;">
+                        <p style="margin-bottom: 0;">{{ local['direccion'] }}</p>
+                        <button type="button" class="btn-copy-address" id="btn-copy-sidebar" style="background:#f8fafc; color:#003366; border:1px solid #e2e8f0; flex-shrink:0;" onclick="copiarTexto('{{ local['direccion'] }}', 'btn-copy-sidebar')">
+                            📋 Copiar
+                        </button>
+                    </div>
+                    {% else %}
+                    <p style="margin-bottom: 10px;">Dirección no especificada.</p>
+                    {% endif %}
+                    
+                    {% if local['mapa_url'] %}
+                    <div class="map-wrapper">
+                        <iframe src="{{ local['mapa_url'] }}" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    {% endif %}
+
+                    <a href="{{ maps_direct_url }}" target="_blank" class="btn-directions">
+                        📍 Abrir en Google Maps
+                    </a>
+
+                    {% if local['categoria'] %}
+                    <span class="badge-pill" style="display:inline-block; margin-top:12px; background:#003366; color:#fff;">{{ local['categoria'] }}</span>
+                    {% endif %}
+                </div>
+
+                <!-- CONDICIONES -->
+                <div class="content-card">
+                    <h3>Condiciones</h3>
+                    <ul class="conditions-list">
+                        {% for condicion in condiciones_lista %}
+                        <li>{{ condicion }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SECCIÓN LOCALES SIMILARES -->
+        {% if locales_similares and locales_similares|length > 0 %}
+        <section class="similar-section">
+            <h3 class="similar-title">Locales Similares en {{ local['categoria'] }}</h3>
+            <div class="similar-grid">
+                {% for sim in locales_similares %}
+                <div class="similar-card">
+                    <div class="similar-card-img">
+                        {% if sim['foto_portada'] %}
+                        <img src="{{ url_for('static', filename='fotos/' + sim['foto_portada']) }}" alt="{{ sim['nombre'] }}">
+                        {% elif sim['foto'] %}
+                        <img src="{{ url_for('static', filename='fotos/' + sim['foto']) }}" alt="{{ sim['nombre'] }}">
+                        {% else %}
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#888; font-family:'Space Mono', monospace; font-size:0.75rem;">SIN IMAGEN</div>
+                        {% endif %}
+                    </div>
+                    <div class="similar-card-body">
+                        <div>
+                            <h4>{{ sim['nombre'] }}</h4>
+                            <p style="font-size:0.85rem; color:#555; margin-bottom:4px;">📍 {{ sim['direccion'] or 'Ubicación local' }}</p>
+                            <span class="badge-pill" style="background:#003366; color:#fff; display:inline-block;">{{ sim['descuento'] }}</span>
+                        </div>
+                        <a href="{{ url_for('perfil', local_id=sim['id']) }}" class="btn-view-similar">Ver Detalles</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+    </div>
+
+    <!-- BARRA FIJA EN MÓVILES -->
+    <div class="mobile-sticky-bar">
+        <div class="mobile-sticky-left">
+            <span class="mobile-sticky-discount">{{ local['descuento'] }}</span>
+            <span class="mobile-sticky-label">BENEFICIO SPE</span>
+        </div>
+        <div class="mobile-sticky-actions">
+            <button type="button" class="btn-mobile-discount" onclick="abrirModalDescuento()">
+                Usar Descuento
+            </button>
+            {% if local['telefono'] %}
+            <a href="{{ wpp_url }}" target="_blank" class="btn-mobile-wpp" title="WhatsApp">
+                <svg class="social-icon-svg" style="fill:#ffffff; width:18px; height:18px;" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.935 2.796.935 3.183 0 5.769-2.587 5.77-5.766.001-3.187-2.575-5.77-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.072-2.029-.479-.988-.41-1.637-.996-2.096-1.58-.62-.789-1.004-1.748-1.004-2.736 0-1.144.593-1.708.804-1.939.21-.23.458-.288.612-.288.153 0 .306.002.436.012.137.01.32-.052.5.383.188.452.641 1.564.697 1.679.057.115.096.25.019.403-.076.153-.115.249-.23.383-.114.135-.24.3-.343.403-.115.115-.235.24-.101.47.134.23.596.983 1.28 1.592.88.784 1.623 1.026 1.853 1.14.23.115.364.096.5-.058.134-.153.575-.67.728-.9.153-.23.307-.192.518-.115.21.077 1.34.632 1.57.747.23.115.383.172.44.269.058.096.058.556-.086.961zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.436 5.176L2 22l4.954-1.399C8.423 21.492 10.148 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- MODAL INFORMATIVO "USAR DESCUENTO" -->
+    <div id="modal-descuento" class="modal-overlay" onclick="cerrarModalDescuento(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="cerrarModalDescuento()">&times;</span>
+            <div class="coupon-badge-tag">BENEFICIO SPE</div>
+            <div class="modal-discount-header">{{ local['descuento'] }}</div>
+            <h3 style="font-family:'Anton', sans-serif; font-size:1.4rem; text-transform:uppercase; margin-bottom:15px;">{{ local['nombre'] }}</h3>
+            
+            <p style="font-family:'Space Mono', monospace; font-size:0.78rem; font-weight:700; text-transform:uppercase; margin-bottom:10px; color:#555;">Condiciones de validación:</p>
+            <ul class="conditions-list" style="margin-bottom: 20px;">
+                {% for condicion in condiciones_lista %}
+                <li>{{ condicion }}</li>
+                {% endfor %}
+            </ul>
+
+            <div class="modal-notice-box">
+                Presenta tu credencial / membresía física vigente en caja para aplicar este beneficio.
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DEL ESPECIAL -->
+    <div id="modal-especial" class="modal-overlay" onclick="cerrarModalEspecial(event)">
+        <div class="modal-box special-modal-box" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="cerrarModalEspecial()">&times;</span>
+            <img src="" alt="Especial" id="esp-modal-img" class="special-modal-img" style="display:none;">
+            <div id="esp-modal-price" class="special-modal-price"></div>
+            <h3 id="esp-modal-title" class="special-modal-title"></h3>
+            <p id="esp-modal-desc" class="special-modal-desc"></p>
+            <div id="esp-modal-terms" class="special-modal-terms" style="display:none;"></div>
+            
+            <a href="#" id="esp-modal-wpp-btn" target="_blank" class="btn-ask-special">
+                💬 Preguntar por este especial
+            </a>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX PARA FOTOS / MENÚ / LOGO / PORTADA -->
+    <div id="lightbox" class="lightbox-modal" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" alt="Ampliación">
+    </div>
+
+    <script>
+        // Modal de Descuento
+        function abrirModalDescuento() {
+            document.getElementById('modal-descuento').style.display = 'flex';
+        }
+        function cerrarModalDescuento() {
+            document.getElementById('modal-descuento').style.display = 'none';
+        }
+
+        // Modal de Especial
+        const localTelefono = `{{ local['telefono'] or '' }}`;
+        function abrirModalEspecial(cardElement) {
+            const titulo = cardElement.getAttribute('data-titulo') || '';
+            const desc = cardElement.getAttribute('data-desc') || '';
+            const precio = cardElement.getAttribute('data-precio') || '';
+            const terminos = cardElement.getAttribute('data-terminos') || '';
+            const foto = cardElement.getAttribute('data-foto') || '';
+
+            document.getElementById('esp-modal-title').textContent = titulo;
+            document.getElementById('esp-modal-desc').textContent = desc || 'Sin descripción adicional.';
+            
+            const priceEl = document.getElementById('esp-modal-price');
+            if (precio.trim()) {
+                priceEl.textContent = precio;
+                priceEl.style.display = 'inline-block';
+            } else {
+                priceEl.style.display = 'none';
+            }
+
+            const imgEl = document.getElementById('esp-modal-img');
+            if (foto.trim()) {
+                imgEl.src = foto;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+            }
+
+            const termsEl = document.getElementById('esp-modal-terms');
+            if (terminos.trim()) {
+                termsEl.textContent = "Términos y detalles:\n" + terminos;
+                termsEl.style.display = 'block';
+            } else {
+                termsEl.style.display = 'none';
+            }
+
+            const wppBtn = document.getElementById('esp-modal-wpp-btn');
+            if (localTelefono.trim()) {
+                const mensaje = `Hola, vi su promoción de "${titulo}" en el directorio y me interesa.`;
+                wppBtn.href = `https://wa.me/${localTelefono}?text=${encodeURIComponent(mensaje)}`;
+                wppBtn.style.display = 'flex';
+            } else {
+                wppBtn.style.display = 'none';
+            }
+
+            document.getElementById('modal-especial').style.display = 'flex';
+        }
+        function cerrarModalEspecial() {
+            document.getElementById('modal-especial').style.display = 'none';
+        }
+
+        // Botón Compartir
+        function compartirLocal() {
+            const shareData = {
+                title: "{{ local['nombre'] }} - Beneficio SPE",
+                text: "¡Mira este descuento de {{ local['descuento'] }} en {{ local['nombre'] }}!",
+                url: window.location.href
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    const tooltip = document.getElementById('share-tooltip');
+                    tooltip.style.display = 'block';
+                    setTimeout(() => {
+                        tooltip.style.display = 'none';
+                    }, 2000);
+                });
+            }
+        }
+
+        // Copiar dirección
+        function copiarTexto(texto, btnId) {
+            navigator.clipboard.writeText(texto).then(() => {
+                const btn = document.getElementById(btnId);
+                const original = btn.innerHTML;
+                btn.innerHTML = "✓ ¡Copiada!";
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                }, 2000);
+            });
+        }
+
+        // Descargar vCard (.vcf)
+        function descargarVCard(nombre, telefono) {
+            const vcardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${nombre}\nORG:${nombre}\nTEL;TYPE=CELL,VOICE:${telefono}\nNOTE:Convenio UniDescuentos SPE\nEND:VCARD`;
+            const blob = new Blob([vcardContent], { type: 'text/vcard;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${nombre.replace(/\s+/g, '_')}_Contacto.vcf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Lightbox
+        function openLightbox(src) {
+            if (!src) return;
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        // Leer más / Leer menos
+        function toggleReadMore() {
+            const wrapper = document.getElementById('about-text-wrapper');
+            const btn = document.getElementById('btn-readmore');
+
+            if (wrapper.classList.contains('expanded')) {
+                wrapper.classList.remove('expanded');
+                btn.textContent = 'Leer más ▼';
+            } else {
+                wrapper.classList.add('expanded');
+                btn.textContent = 'Leer menos ▲';
+            }
+        }
+
+        // Lógica de horario militar y días de descanso
+        document.addEventListener('DOMContentLoaded', () => {
+            const p = document.getElementById('about-text-p');
+            const btnReadMore = document.getElementById('btn-readmore');
+            const fadeMask = document.getElementById('about-fade-mask');
+            if (p && p.scrollHeight > 105) {
+                btnReadMore.style.display = 'inline-block';
+            } else if (fadeMask) {
+                fadeMask.style.display = 'none';
+            }
+
+            const horariosRaw = `{{ local['horarios'] or '' }}`.toLowerCase();
+            const badge = document.getElementById('dynamic-status-badge');
+            const textSpan = document.getElementById('status-text');
+
+            if (!badge || !textSpan || !horariosRaw.trim()) return;
+
+            const ahora = new Date();
+            const diaSemana = ahora.getDay();
+            const tiempoActual = ahora.getHours() * 60 + ahora.getMinutes();
+
+            let cerradoHoy = false;
+
+            const diasCerradosPatterns = [
+                { dia: 0, pat: /(?:dom|domingo)\s*:\s*cerrado/ },
+                { dia: 1, pat: /(?:lun|lunes)\s*:\s*cerrado/ },
+                { dia: 2, pat: /(?:mar|martes)\s*:\s*cerrado/ },
+                { dia: 3, pat: /(?:mi[eé]|miercoles|miércoles)\s*:\s*cerrado/ },
+                { dia: 4, pat: /(?:jue|jueves)\s*:\s*cerrado/ },
+                { dia: 5, pat: /(?:vie|viernes)\s*:\s*cerrado/ },
+                { dia: 6, pat: /(?:s[aá]b|sabado|sábado)\s*:\s*cerrado/ }
+            ];
+
+            for (let d of diasCerradosPatterns) {
+                if (diaSemana === d.dia && d.pat.test(horariosRaw)) {
+                    cerradoHoy = true;
+                    break;
+                }
+            }
+
+            let abierto = false;
+
+            if (!cerradoHoy) {
+                const regexMilitar = /(\d{1,2}):(\d{2})\s*(?:-|a|to)\s*(\d{1,2}):(\d{2})/;
+                const matchMil = horariosRaw.match(regexMilitar);
+
+                if (matchMil) {
+                    const minApertura = parseInt(matchMil[1]) * 60 + parseInt(matchMil[2]);
+                    const minCierre = parseInt(matchMil[3]) * 60 + parseInt(matchMil[4]);
+
+                    if (minCierre > minApertura) {
+                        abierto = (tiempoActual >= minApertura && tiempoActual <= minCierre);
+                    } else {
+                        abierto = (tiempoActual >= minApertura || tiempoActual <= minCierre);
+                    }
+                } else {
+                    const regexSimple = /(\d{1,2})\s*(?:-|a|to)\s*(\d{1,2})/;
+                    const matchSimple = horariosRaw.match(regexSimple);
+                    if (matchSimple) {
+                        const hIni = parseInt(matchSimple[1]) * 60;
+                        const hFin = parseInt(matchSimple[2]) * 60;
+                        abierto = (tiempoActual >= hIni && tiempoActual <= hFin);
+                    } else {
+                        abierto = true;
+                    }
+                }
+            }
+
+            if (abierto) {
+                badge.className = 'status-badge status-open';
+                textSpan.textContent = 'Abierto ahora';
+            } else {
+                badge.className = 'status-badge status-closed';
+                textSpan.textContent = 'Cerrado en este momento';
+            }
+        });
+    </script>
+
+</body>
+</html>

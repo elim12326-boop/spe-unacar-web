@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - SPE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #ffffff; color: #000000; font-family: 'Inter', sans-serif; }
+
+        .admin-navbar {
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #000000;
+            background: #ffffff;
+        }
+        .admin-navbar .logo-img { height: 40px; width: auto; }
+
+        .admin-container { max-width: 1200px; margin: 40px auto; padding: 0 40px; }
+
+        .admin-header { margin-bottom: 25px; border-bottom: 2px solid #000000; padding-bottom: 15px; }
+        .admin-header h1 { font-family: 'Anton', sans-serif; font-size: 3.2rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .tabs-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #000000;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid #000000;
+            padding: 10px 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab-btn:hover { background: #f0f0f0; }
+        .tab-btn.active {
+            background: #003366;
+            color: #ffffff;
+            box-shadow: 3px 3px 0px #000000;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .search-box {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            max-width: 400px;
+        }
+        .search-box label {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #000000;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            background: #fafafa;
+        }
+
+        .card-box { background: #ffffff; border: 1px solid #000000; padding: 30px; box-shadow: 6px 6px 0px #000000; max-width: 700px; margin: 0 auto; }
+        .card-box h2 { font-family: 'Anton', sans-serif; font-size: 1.8rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #000; padding-bottom: 10px; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px; border: 1px solid #000000; font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; background: #fafafa;
+        }
+        .form-group textarea { resize: vertical; height: 80px; }
+
+        details.accordion-specials {
+            background: #fafafa;
+            border: 1px solid #000000;
+            padding: 15px;
+            margin-bottom: 18px;
+        }
+        details.accordion-specials summary {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            outline: none;
+        }
+        .specials-box {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px dashed #000000;
+        }
+        .special-item {
+            background: #ffffff;
+            border: 1px solid #000000;
+            padding: 12px;
+            margin-bottom: 14px;
+            box-shadow: 3px 3px 0px #000000;
+        }
+        .special-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .btn-remove-special {
+            background: #cc0000;
+            color: #ffffff;
+            border: none;
+            padding: 4px 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .btn-add-special {
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 8px 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        .btn-add-special:hover { background: #003366; }
+
+        .btn-submit {
+            width: 100%; background: #003366; color: #ffffff; border: none; padding: 14px;
+            font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase;
+            cursor: pointer; transition: background 0.2s; margin-top: 10px;
+        }
+        .btn-submit:hover { background: #000000; }
+
+        .btn-reset {
+            background: #666666; color: #ffffff; border: none; padding: 6px 12px;
+            font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+            cursor: pointer; margin-left: 10px; display: none;
+        }
+
+        .table-section h2 { font-family: 'Anton', sans-serif; font-size: 2.2rem; text-transform: uppercase; margin-bottom: 15px; }
+
+        table { width: 100%; border-collapse: collapse; background: #ffffff; border: 1px solid #000000; margin-bottom: 30px; }
+        th, td { padding: 12px 15px; border: 1px solid #000000; text-align: left; font-size: 0.88rem; }
+        th { background: #003366; color: #ffffff; font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .action-btns { display: flex; gap: 6px; align-items: center; }
+        .btn-qr { background: #28a745; color: #ffffff; border: none; padding: 6px 10px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; text-decoration: none; text-transform: uppercase; display: inline-block; }
+        .btn-qr:hover { background: #1e7e34; }
+        .btn-edit { background: #003366; color: #ffffff; border: none; padding: 6px 10px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+        .btn-edit:hover { background: #001122; }
+        .btn-delete { background: #cc0000; color: #ffffff; border: none; padding: 6px 10px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+        .btn-delete:hover { background: #880000; }
+
+        .thumb-img { width: 45px; height: 45px; object-fit: cover; border: 1px solid #000; display: block; }
+    </style>
+</head>
+<body>
+
+    <nav class="admin-navbar">
+        <a href="/">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo SPE" class="logo-img">
+        </a>
+    </nav>
+
+    <div class="admin-container">
+
+        <header class="admin-header">
+            <h1>Panel de Administración</h1>
+            <p style="font-family: 'Space Mono', monospace; font-size: 11px;">CONTROL Y REGISTRO DE SOCIOS Y COMERCIOS</p>
+        </header>
+
+        <div class="tabs-nav">
+            <button class="tab-btn active" id="btn-tab-socios-lista" onclick="switchTab('tab-socios-lista', this)">Socios Registrados</button>
+            <button class="tab-btn" id="btn-tab-socio-form" onclick="switchTab('tab-socio-form', this)">Registrar / Editar Socio</button>
+            <button class="tab-btn" id="btn-tab-locales-lista" onclick="switchTab('tab-locales-lista', this)">Comercios Registrados</button>
+            <button class="tab-btn" id="btn-tab-local-form" onclick="switchTab('tab-local-form', this)">Registrar / Editar Comercio</button>
+        </div>
+
+        <!-- 1. VISTA: SOCIOS REGISTRADOS -->
+        <div id="tab-socios-lista" class="tab-content active table-section">
+            <h2>Socios Registrados</h2>
+            
+            <div class="search-box">
+                <label>BUSCAR SOCIO (ID O NOMBRE):</label>
+                <input type="text" id="search-socios" onkeyup="buscarSocios()">
+            </div>
+
+            <table id="table-socios">
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Carrera</th>
+                        <th>Estatus</th>
+                        <th>Vigencia</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in socios %}
+                    <tr>
+                        <td>
+                            {% if s.foto %}
+                                <img src="{{ url_for('static', filename='fotos/' + s.foto) }}" class="thumb-img">
+                            {% else %}
+                                S/F
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ s.id }}</strong></td>
+                        <td>{{ s.nombre }}</td>
+                        <td>{{ s.carrera }}</td>
+                        <td>{{ s.estatus }}</td>
+                        <td>{{ s.vigencia }}</td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="{{ url_for('validar_socio', id=s.id) }}" target="_blank" class="btn-qr">Ver QR</a>
+                                <button type="button" class="btn-edit" onclick="editarSocio('{{ s.id }}', '{{ s.nombre }}', '{{ s.carrera }}', '{{ s.estatus }}', '{{ s.vigencia }}')">Editar</button>
+                                <form action="/admin" method="POST" onsubmit="return confirm('¿Eliminar socio?');" style="display:inline;">
+                                    <input type="hidden" name="action" value="eliminar_socio">
+                                    <input type="hidden" name="socio_id" value="{{ s.id }}">
+                                    <button type="submit" class="btn-delete">Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="7">No hay socios registrados.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 2. VISTA: FORMULARIO SOCIO -->
+        <div id="tab-socio-form" class="tab-content">
+            <div class="card-box">
+                <h2>Registrar / Editar Socio <button type="button" id="btn-cancel-socio" class="btn-reset" onclick="resetFormSocio()">Cancelar Edición</button></h2>
+                <form id="form-socio" action="/admin" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="guardar_socio">
+
+                    <div class="form-group">
+                        <label>ID / Matrícula (Único):</label>
+                        <input type="text" id="socio_id" name="id" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nombre Completo:</label>
+                        <input type="text" id="socio_nombre" name="nombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Carrera:</label>
+                        <input type="text" id="socio_carrera" name="carrera" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estatus:</label>
+                        <select id="socio_estatus" name="estatus" required>
+                            <option value="ACTIVO">ACTIVO</option>
+                            <option value="INACTIVO">INACTIVO</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Vigencia:</label>
+                        <input type="text" id="socio_vigencia" name="vigencia" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Foto del Socio:</label>
+                        <input type="file" name="foto" accept="image/*">
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btn-socio-submit">Guardar Socio</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 3. VISTA: COMERCIOS REGISTRADOS -->
+        <div id="tab-locales-lista" class="tab-content table-section">
+            <h2>Comercios Registrados</h2>
+
+            <div class="search-box">
+                <label>BUSCAR COMERCIO (ID O NOMBRE):</label>
+                <input type="text" id="search-locales" onkeyup="buscarLocales()">
+            </div>
+
+            <table id="table-locales">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descuento</th>
+                        <th>Categoría</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for l in locales %}
+                    <tr>
+                        <td>
+                            {% if l.foto_perfil %}
+                                <img src="{{ url_for('static', filename='fotos/' + l.foto_perfil) }}" class="thumb-img">
+                            {% elif l.foto_portada %}
+                                <img src="{{ url_for('static', filename='fotos/' + l.foto_portada) }}" class="thumb-img">
+                            {% elif l.foto %}
+                                <img src="{{ url_for('static', filename='fotos/' + l.foto) }}" class="thumb-img">
+                            {% else %}
+                                S/F
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ l.id }}</strong></td>
+                        <td>{{ l.nombre }}</td>
+                        <td>{{ l.descuento }}</td>
+                        <td>{{ l.categoria }}</td>
+                        <td>{{ l.direccion }}</td>
+                        <td>
+                            <div class="action-btns">
+                                <button type="button" class="btn-edit" 
+                                    data-id="{{ l['id'] }}"
+                                    data-nombre="{{ l['nombre'] or '' }}"
+                                    data-descuento="{{ l['descuento'] or '' }}"
+                                    data-categoria="{{ l['categoria'] or '' }}"
+                                    data-direccion="{{ l['direccion'] or '' }}"
+                                    data-descripcion="{{ l['descripcion'] or '' }}"
+                                    data-telefono="{{ l['telefono'] or '' }}"
+                                    data-facebook="{{ l['facebook'] or '' }}"
+                                    data-instagram="{{ l['instagram'] or '' }}"
+                                    data-tiktok="{{ l['tiktok'] or '' }}"
+                                    data-mapa="{{ l['mapa_url'] or '' }}"
+                                    data-condiciones="{{ l['condiciones'] or '' }}"
+                                    data-titulo_esp="{{ l['titulo_especiales'] or '' }}"
+                                    data-horarios="{{ l['horarios'] or '' }}"
+                                    data-rango_precio="{{ l['rango_precio'] or '' }}"
+                                    data-servicios_extra="{{ l['servicios_extra'] or '' }}"
+                                    data-enlace_citas="{{ l['enlace_citas'] or '' }}"
+                                    onclick="cargarDatosLocal(this)">Editar</button>
+                                <form action="/admin" method="POST" onsubmit="return confirm('¿Eliminar local?');" style="display:inline;">
+                                    <input type="hidden" name="action" value="eliminar_local">
+                                    <input type="hidden" name="local_id" value="{{ l['id'] }}">
+                                    <button type="submit" class="btn-delete">Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="7">No hay comercios registrados.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 4. VISTA: FORMULARIO COMERCIO -->
+        <div id="tab-local-form" class="tab-content">
+            <div class="card-box">
+                <h2>Registrar / Editar Comercio <button type="button" id="btn-cancel-local" class="btn-reset" onclick="resetFormLocal()">Cancelar Edición</button></h2>
+                <form id="form-local" action="/admin" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="guardar_local">
+                    <input type="hidden" id="local_id" name="local_id" value="">
+
+                    <div class="form-group">
+                        <label>Nombre del Local:</label>
+                        <input type="text" id="local_nombre" name="nombre_local" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descuento / Promoción (ej. 15% OFF):</label>
+                        <input type="text" id="local_descuento" name="descuento" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categoría:</label>
+                        <select id="local_categoria" name="categoria" required>
+                            <option value="" disabled selected>-- SELECCIONA UNA CATEGORÍA --</option>
+                            <option value="Alimentos / Cafetería">Alimentos / Cafetería</option>
+                            <option value="Restaurantes / Snacks">Restaurantes / Snacks</option>
+                            <option value="Papelería / Copias / Impresión">Papelería / Copias / Impresión</option>
+                            <option value="Tecnología / Reparación / Celulares">Tecnología / Reparación / Celulares</option>
+                            <option value="Ropa / Accesorios / Moda">Ropa / Accesorios / Moda</option>
+                            <option value="Salud / Belleza / Barbería">Salud / Belleza / Barbería</option>
+                            <option value="Entretenimiento / Ocio">Entretenimiento / Ocio</option>
+                            <option value="Servicios Escolares / Cursos">Servicios Escolares / Cursos</option>
+                            <option value="Librería / Material Didáctico">Librería / Material Didáctico</option>
+                            <option value="Otros Servicios">Otros Servicios</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dirección:</label>
+                        <input type="text" id="local_direccion" name="direccion" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Horarios de Atención (ej. Lun - Sáb: 08:00 - 20:00):</label>
+                        <input type="text" id="local_horarios" name="horarios" placeholder="Lun - Sáb: 08:00 - 20:00 | Dom: Cerrado">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rango de Precio Estimado:</label>
+                        <select id="local_rango_precio" name="rango_precio">
+                            <option value="">-- No especificado --</option>
+                            <option value="$ · Económico">$ · Económico</option>
+                            <option value="$$ · Moderado">$$ · Moderado</option>
+                            <option value="$$$ · Premium">$$$ · Premium</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Servicios Extras (Separados por coma):</label>
+                        <input type="text" id="local_servicios_extra" name="servicios_extra" placeholder="Wi-Fi, Climatizado, Estacionamiento, Acepta Tarjeta">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Enlace para Citas o Reservas (URL o Link de WhatsApp):</label>
+                        <input type="text" id="local_enlace_citas" name="enlace_citas" placeholder="https://calendly.com/... o enlace de WhatsApp">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Número de WhatsApp / Teléfono:</label>
+                        <input type="text" id="local_telefono" name="telefono" placeholder="Ej. 9381234567">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Facebook (URL o usuario):</label>
+                        <input type="text" id="local_facebook" name="facebook" placeholder="https://facebook.com/pagina">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Instagram (URL o usuario):</label>
+                        <input type="text" id="local_instagram" name="instagram" placeholder="https://instagram.com/cuenta">
+                    </div>
+
+                    <div class="form-group">
+                        <label>TikTok (URL o usuario):</label>
+                        <input type="text" id="local_tiktok" name="tiktok" placeholder="https://tiktok.com/@cuenta">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ubicación en Mapa (URL o Iframe de Google Maps):</label>
+                        <input type="text" id="local_mapa_url" name="mapa_url" placeholder="https://maps.app.goo.gl/... o https://maps.google.com/...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripción Corta:</label>
+                        <textarea id="local_descripcion" name="descripcion"></textarea>
+                    </div>
+
+                    <!-- SECCIÓN CONFIGURACIÓN DE ESPECIALES -->
+                    <details class="accordion-specials" open>
+                        <summary>▼ CONFIGURACIÓN DE ESPECIALES / PROMOCIONES</summary>
+                        <div class="specials-box">
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label>Título de la Sección (Personalizable):</label>
+                                <input type="text" id="local_titulo_especiales" name="titulo_especiales" value="Especiales para Estudiantes">
+                            </div>
+
+                            <div id="contenedor-especiales"></div>
+
+                            <button type="button" class="btn-add-special" onclick="agregarFilaEspecial()">+ Agregar Especial</button>
+                        </div>
+                    </details>
+
+                    <div class="form-group">
+                        <label>Condiciones del Descuento (Una por línea):</label>
+                        <textarea id="local_condiciones" name="condiciones" style="height: 100px;">{{ condiciones_default }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Menú o Catálogo (PDF o Imagen):</label>
+                        <input type="file" name="archivo_menu" accept="application/pdf,image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Foto de Portada del Local (Banner Superior):</label>
+                        <input type="file" name="foto_portada" accept="image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Foto de Perfil / Logo del Local (Círculo Flotante):</label>
+                        <input type="file" name="foto_perfil" accept="image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Galería de Fotos del Local (Seleccionar una o varias):</label>
+                        <input type="file" name="fotos_galeria" accept="image/*" multiple>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btn-local-submit">Guardar Comercio</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const CONDICIONES_DEFAULT = `✔ Válido al presentar tu membresía física de SPE vigente.\n✔ Aplica de forma presencial en el establecimiento participante.\n✔ No acumulable con otras promociones o descuentos vigentes.`;
+        const especialesData = {{ especiales_map | tojson }};
+
+        function switchTab(tabId, element) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            if (element) {
+                element.classList.add('active');
+            }
+        }
+
+        function buscarSocios() {
+            const query = document.getElementById('search-socios').value.toLowerCase();
+            const rows = document.querySelectorAll('#table-socios tbody tr');
+
+            rows.forEach(row => {
+                const idCell = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';
+                const nombreCell = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';
+
+                if (idCell.includes(query) || nombreCell.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function buscarLocales() {
+            const query = document.getElementById('search-locales').value.toLowerCase();
+            const rows = document.querySelectorAll('#table-locales tbody tr');
+
+            rows.forEach(row => {
+                const idCell = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';
+                const nombreCell = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';
+
+                if (idCell.includes(query) || nombreCell.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function editarSocio(id, nombre, carrera, estatus, vigencia) {
+            switchTab('tab-socio-form', document.getElementById('btn-tab-socio-form'));
+
+            document.getElementById('socio_id').value = id;
+            document.getElementById('socio_id').readOnly = true;
+            document.getElementById('socio_nombre').value = nombre;
+            document.getElementById('socio_carrera').value = carrera;
+            document.getElementById('socio_estatus').value = estatus;
+            document.getElementById('socio_vigencia').value = vigencia;
+            
+            document.getElementById('btn-socio-submit').innerText = "Actualizar Socio";
+            document.getElementById('btn-cancel-socio').style.display = "inline-block";
+        }
+
+        function resetFormSocio() {
+            document.getElementById('form-socio').reset();
+            document.getElementById('socio_id').readOnly = false;
+            document.getElementById('btn-socio-submit').innerText = "Guardar Socio";
+            document.getElementById('btn-cancel-socio').style.display = "none";
+            switchTab('tab-socios-lista', document.getElementById('btn-tab-socios-lista'));
+        }
+
+        // 1. FILA DE ESPECIAL CON CAMPO DE TÉRMINOS / DESCRIPCIÓN DETALLADA
+        function agregarFilaEspecial(titulo = '', desc = '', precio = '', foto = '', terminos = '') {
+            const contenedor = document.getElementById('contenedor-especiales');
+            const index = contenedor.children.length + 1;
+
+            const div = document.createElement('div');
+            div.className = 'special-item';
+            div.innerHTML = `
+                <div class="special-item-header">
+                    <strong style="font-family:'Space Mono',monospace; font-size:10px;">ESPECIAL #${index}</strong>
+                    <button type="button" class="btn-remove-special" onclick="this.closest('.special-item').remove()">Eliminar</button>
+                </div>
+                <input type="text" name="esp_titulo[]" value="${titulo}" placeholder="Título (Ej. Combo Expreso + Muffin)" style="margin-bottom:6px;" required>
+                <input type="text" name="esp_desc[]" value="${desc}" placeholder="Descripción breve (Ej. Energía rápida para tus pausas)" style="margin-bottom:6px;">
+                <input type="text" name="esp_precio[]" value="${precio}" placeholder="Precio o Ahorro con App (Ej. $3.50 con app)" style="margin-bottom:6px;">
+                <textarea name="esp_terminos[]" placeholder="Descripción detallada / Términos del especial (Opcional)" style="margin-bottom:6px; height:60px;">${terminos}</textarea>
+                
+                <input type="hidden" name="esp_foto_existente[]" value="${foto}">
+                <label style="font-family:'Space Mono',monospace; font-size:9px; display:block; margin-top:4px;">Foto del Producto / Especial:${foto ? ' (Actual: ' + foto + ')' : ''}</label>
+                <input type="file" name="esp_foto[]" accept="image/*">
+            `;
+            contenedor.appendChild(div);
+        }
+
+        function cargarDatosLocal(btn) {
+            switchTab('tab-local-form', document.getElementById('btn-tab-local-form'));
+
+            const localId = btn.getAttribute('data-id') || '';
+            document.getElementById('local_id').value = localId;
+            document.getElementById('local_nombre').value = btn.getAttribute('data-nombre') || '';
+            document.getElementById('local_descuento').value = btn.getAttribute('data-descuento') || '';
+            
+            const catValue = btn.getAttribute('data-categoria') || '';
+            const selectCat = document.getElementById('local_categoria');
+            selectCat.value = catValue;
+            if (!selectCat.value && catValue) {
+                const opt = document.createElement('option');
+                opt.value = catValue;
+                opt.text = catValue;
+                selectCat.add(opt);
+                selectCat.value = catValue;
+            }
+
+            document.getElementById('local_direccion').value = btn.getAttribute('data-direccion') || '';
+            document.getElementById('local_horarios').value = btn.getAttribute('data-horarios') || '';
+            document.getElementById('local_rango_precio').value = btn.getAttribute('data-rango_precio') || '';
+            document.getElementById('local_servicios_extra').value = btn.getAttribute('data-servicios_extra') || '';
+            document.getElementById('local_enlace_citas').value = btn.getAttribute('data-enlace_citas') || '';
+
+            document.getElementById('local_descripcion').value = btn.getAttribute('data-descripcion') || '';
+            document.getElementById('local_telefono').value = btn.getAttribute('data-telefono') || '';
+            document.getElementById('local_facebook').value = btn.getAttribute('data-facebook') || '';
+            document.getElementById('local_instagram').value = btn.getAttribute('data-instagram') || '';
+            document.getElementById('local_tiktok').value = btn.getAttribute('data-tiktok') || '';
+            document.getElementById('local_mapa_url').value = btn.getAttribute('data-mapa') || '';
+            
+            const cond = btn.getAttribute('data-condiciones');
+            document.getElementById('local_condiciones').value = (cond && cond.trim() !== '') ? cond : CONDICIONES_DEFAULT;
+
+            const titEsp = btn.getAttribute('data-titulo_esp');
+            document.getElementById('local_titulo_especiales').value = (titEsp && titEsp.trim() !== '') ? titEsp : "Especiales para Estudiantes";
+
+            const contenedor = document.getElementById('contenedor-especiales');
+            contenedor.innerHTML = '';
+            const items = especialesData[localId] || [];
+            if (items.length > 0) {
+                items.forEach(esp => {
+                    agregarFilaEspecial(esp.titulo || '', esp.descripcion || '', esp.precio || '', esp.foto || '', esp.terminos || '');
+                });
+            } else {
+                agregarFilaEspecial();
+            }
+
+            document.getElementById('btn-local-submit').innerText = "Actualizar Comercio";
+            document.getElementById('btn-cancel-local').style.display = "inline-block";
+        }
+
+        function resetFormLocal() {
+            document.getElementById('form-local').reset();
+            document.getElementById('local_id').value = "";
+            document.getElementById('local_condiciones').value = CONDICIONES_DEFAULT;
+            document.getElementById('local_titulo_especiales').value = "Especiales para Estudiantes";
+            document.getElementById('local_horarios').value = "";
+            document.getElementById('local_rango_precio').value = "";
+            document.getElementById('local_servicios_extra').value = "";
+            document.getElementById('local_enlace_citas').value = "";
+            document.getElementById('contenedor-especiales').innerHTML = '';
+            agregarFilaEspecial();
+            document.getElementById('btn-local-submit').innerText = "Guardar Comercio";
+            document.getElementById('btn-cancel-local').style.display = "none";
+            switchTab('tab-locales-lista', document.getElementById('btn-tab-locales-lista'));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('contenedor-especiales').children.length === 0) {
+                agregarFilaEspecial();
+            }
+        });
+    </script>
+
+</body>
+</html>
+

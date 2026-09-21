@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicita tu Membresía - SPE Membership</title>
+
+    <!-- FUENTES INSTITUCIONALES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background-color: #f8fafc; 
+            color: #000000; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 1. NAVBAR INSTITUCIONAL UNIFICADO EN AZUL MARINO */
+        .header-navbar {
+            background-color: #003366;
+            color: #ffffff;
+            width: 100%;
+            border-bottom: 2px solid #002244;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.15);
+            padding: 12px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logos {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-logo-img {
+            height: 65px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+        }
+        .header-logo-divider {
+            height: 45px;
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover { color: #d0e4ff; }
+
+        .btn-get-card {
+            background-color: #002244;
+            color: #ffffff;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 10px 24px;
+            border-radius: 0;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: inline-block;
+            transition: background 0.2s ease;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+        }
+        .btn-get-card:hover { 
+            background-color: #001122; 
+            border-color: #ffffff;
+        }
+
+        /* 2. MAQUETACIÓN EN DOS COLUMNAS */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+        }
+        .grid-container {
+            max-width: 1150px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1.05fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        /* ALERTAS FLASH */
+        .flash-container {
+            margin-bottom: 20px;
+        }
+        .flash-alert {
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid transparent;
+        }
+        .flash-success {
+            background-color: #f0fdf4;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+        .flash-danger {
+            background-color: #fef2f2;
+            color: #991b1b;
+            border-color: #fecaca;
+        }
+        .flash-warning {
+            background-color: #fffbeb;
+            color: #92400e;
+            border-color: #fde68a;
+        }
+
+        /* COLUMNA IZQUIERDA (INFORMATIVA) */
+        .info-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #003366;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .info-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 3.5rem;
+            line-height: 1;
+            text-transform: uppercase;
+            color: #000000;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        .info-desc {
+            font-size: 0.95rem;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* 1. CAJA DE REQUISITOS */
+        .requirements-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 22px 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .requirements-box h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #003366;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        .req-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .req-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.88rem;
+            color: #1e293b;
+            font-weight: 500;
+        }
+        .check-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: #dcfce7;
+            color: #16a34a;
+            font-size: 13px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        /* COLUMNA DERECHA (FORMULARIO CON RELIEVE) */
+        .form-card {
+            background: #ffffff;
+            padding: 38px 34px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+        .form-header-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.1rem;
+            text-transform: uppercase;
+            color: #003366;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            color: #000000;
+        }
+
+        .required-asterisk {
+            color: #dc2626;
+            margin-left: 2px;
+            font-weight: 700;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #f8fafc;
+            color: #000000;
+        }
+        .form-input:focus {
+            border-color: #003366;
+            background: #ffffff;
+        }
+
+        /* ESTILO PARA LOS SELECTS */
+        select.form-input {
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23003366'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        /* LEYENDA INFORMATIVA PARA ARCHIVOS */
+        .info-files-legend {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid #003366;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            font-size: 0.8rem;
+            line-height: 1.45;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* INPUTS FILE ESTILIZADOS */
+        .file-upload-box {
+            border: 1.5px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .file-upload-box:hover { border-color: #003366; }
+        .file-input {
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            color: #475569;
+            cursor: pointer;
+        }
+        .file-input::file-selector-button {
+            background-color: #003366;
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.2s;
+        }
+        .file-input::file-selector-button:hover { background-color: #002244; }
+
+        /* BOTÓN DE ENVÍO OFICIAL */
+        .btn-submit {
+            background: #003366;
+            color: #ffffff;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background: #001f3f;
+            transform: translateY(-2px);
+        }
+
+        /* 4. FOOTER INSTITUCIONAL */
+        .footer {
+            background-color: #f4f4f4;
+            padding: 45px 60px;
+            border-top: 1px solid #000000;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .footer-brand {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.4rem;
+            color: #000000;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .footer-copy {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: #666666;
+            max-width: 350px;
+            line-height: 1.5;
+        }
+        .footer-links-group {
+            display: flex;
+            gap: 60px;
+        }
+        .footer-links-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .footer-links-column a {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: #000000;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .footer-links-column a:hover { color: #003366; }
+
+        @media (max-width: 900px) {
+            .header-navbar { padding: 12px 20px; }
+            .grid-container { grid-template-columns: 1fr; gap: 35px; }
+            .info-title { font-size: 2.8rem; }
+            .footer { flex-direction: column; padding: 35px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. NAVBAR INSTITUCIONAL UNIFICADO -->
+    <header class="header-navbar">
+        <div class="header-logos">
+            <a href="/" title="UNACAR">
+                <img src="{{ url_for('static', filename='unacar.png') }}" alt="Logo UNACAR" class="header-logo-img">
+            </a>
+            <div class="header-logo-divider"></div>
+            <a href="/" title="SPE">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo SPE" class="header-logo-img">
+            </a>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Inicio</a>
+            <a href="/directorio" class="nav-link">Directorio</a>
+            <a href="/credencial" class="btn-get-card">Get Card</a>
+        </nav>
+    </header>
+
+    <!-- 2. MAQUETACIÓN EN 2 COLUMNAS SOBRE FONDO BG-SLATE-50 -->
+    <main class="main-wrapper">
+        <div class="grid-container">
+            
+            <!-- COLUMNA IZQUIERDA: INFORMATIVA + REQUISITOS (MOCKUP EN BLANCO) -->
+            <div>
+                <p class="info-tag">SPE MEMBERSHIP NETWORK</p>
+                <h1 class="info-title">Solicita tu Membresía SPE</h1>
+                <p class="info-desc">
+                    Tu pasaporte hacia el ahorro inteligente. Acceso ilimitado a convenios preferenciales y descuentos exclusivos para la comunidad universitaria en comercios locales de la isla.
+                </p>
+
+                <!-- 1. REQUISITOS ESTILIZADOS CON CHECKS VERDES -->
+                <div class="requirements-box">
+                    <h3>Requisitos para el registro</h3>
+                    <ul class="req-list">
+                        <li class="req-item">
+                            <span class="check-badge">✓</span>
+                            <span>Comprobante de inscripción o reinscripción vigente.</span>
+                        </li>
+                        <li class="req-item">
+                            <span class="check-badge">✓</span>
+                            <span>Fotografía infantil o de rostro clara y reciente.</span>
+                        </li>
+                        <li class="req-item">
+                            <span class="check-badge">✓</span>
+                            <span>Correo electrónico universitario o institucional activo.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA: FORMULARIO ENLAZADO CON EL BACKEND -->
+            <div class="form-card">
+                <h2 class="form-header-title">Registro de Membresía</h2>
+
+                <!-- RETROALIMENTACIÓN FLASH DE FLASK -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-container">
+                            {% for category, message in messages %}
+                                <div class="flash-alert flash-{{ category }}">
+                                    {% if category == 'success' %}✓{% elif category == 'danger' %}✕{% else %}⚠{% endif %}
+                                    <span>{{ message }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                <form action="/credencial" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo <span class="required-asterisk">*</span></label>
+                        <input type="text" id="nombre" name="nombre" class="form-input" placeholder="Elim Poot Carrillo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="matricula">Matrícula / ID <span class="required-asterisk">*</span></label>
+                        <input type="text" id="matricula" name="matricula" class="form-input" placeholder="123456" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo Universitario <span class="required-asterisk">*</span></label>
+                        <input type="email" id="correo" name="correo" class="form-input" placeholder="123456@mail.unacar.mx" required>
+                    </div>
+
+                    <!-- CAMPO DE NÚMERO DE TELÉFONO -->
+                    <div class="form-group">
+                        <label for="telefono">Número de teléfono <span class="required-asterisk">*</span></label>
+                        <input type="tel" id="telefono" name="telefono" class="form-input" placeholder="938 000 0000" required>
+                    </div>
+
+                    <!-- MENÚ DESPLEGABLE: CARRERA UNACAR -->
+                    <div class="form-group">
+                        <label for="carrera">Carrera <span class="required-asterisk">*</span></label>
+                        <select id="carrera" name="carrera" class="form-input" required>
+                            <option value="" disabled selected>Selecciona tu carrera...</option>
+                            
+                            <optgroup label="Facultad de Química">
+                                <option value="Ingeniería Petrolera">Ingeniería Petrolera</option>
+                                <option value="Ingeniería Química">Ingeniería Química</option>
+                                <option value="Ingeniería Geológica">Ingeniería Geológica</option>
+                            </optgroup>
+
+                            <optgroup label="Facultad de Ingeniería">
+                                <option value="Ingeniería Mecánica">Ingeniería Mecánica</option>
+                                <option value="Ingeniería Mecatrónica">Ingeniería Mecatrónica</option>
+                                <option value="Ingeniería Civil">Ingeniería Civil</option>
+                                <option value="Ingeniería Geofísica">Ingeniería Geofísica</option>
+                                <option value="Ingeniería en Energía">Ingeniería en Energía</option>
+                                <option value="Licenciatura en Arquitectura Sustentable">Licenciatura en Arquitectura Sustentable</option>
+                            </optgroup>
+
+                            <optgroup label="Facultad de Ciencias de la Información">
+                                <option value="Ingeniería en Sistemas Computacionales">Ingeniería en Sistemas Computacionales</option>
+                                <option value="Ingeniería en Computación">Ingeniería en Computación</option>
+                                <option value="Ingeniería en Diseño Multimedia">Ingeniería en Diseño Multimedia</option>
+                                <option value="Ingeniería en Tecnologías de Cómputo y Comunicaciones">Ingeniería en Tecnologías de Cómputo y Comunicaciones</option>
+                            </optgroup>
+
+                            <optgroup label="Facultad de Ciencias de la Salud">
+                                <option value="Licenciatura en Medicina">Licenciatura en Medicina</option>
+                                <option value="Licenciatura en Enfermería">Licenciatura en Enfermería</option>
+                                <option value="Licenciatura en Nutrición">Licenciatura en Nutrición</option>
+                                <option value="Licenciatura en Fisioterapia">Licenciatura en Fisioterapia</option>
+                                <option value="Licenciatura en Psicología Clínica">Licenciatura en Psicología Clínica</option>
+                                <option value="Licenciatura en Educación Física y Deporte">Licenciatura en Educación Física y Deporte</option>
+                            </optgroup>
+
+                            <optgroup label="Facultad de Ciencias Naturales">
+                                <option value="Licenciatura en Biología Marina">Licenciatura en Biología Marina</option>
+                            </optgroup>
+
+                            <optgroup label="Facultad de Ciencias Económicas y Administrativas">
+                                <option value="Licenciatura en Administración de Empresas">Licenciatura en Administración de Empresas</option>
+                                <option value="Licenciatura en Contaduría">Licenciatura en Contaduría</option>
+                                <option value="Licenciatura en Negocios Internacionales">Licenciatura en Negocios Internacionales</option>
+                                <option value="Licenciatura en Mercadotecnia">Licenciatura en Mercadotecnia</option>
+                                <option value="Licenciatura en Administración Turística">Licenciatura en Administración Turística</option>
+                            </optgroup>
+
+                            <optgroup label="Facultad de Derecho">
+                                <option value="Licenciatura en Derecho">Licenciatura en Derecho</option>
+                                <option value="Licenciatura en Criminología y Criminalística">Licenciatura en Criminología y Criminalística</option>
+                            </optgroup>
+
+                            <optgroup label="Facultad de Ciencias Educativas">
+                                <option value="Licenciatura en Educación">Licenciatura en Educación</option>
+                                <option value="Licenciatura en Lengua Inglesa">Licenciatura en Lengua Inglesa</option>
+                                <option value="Licenciatura en Comunicación y Gestión Cultural">Licenciatura en Comunicación y Gestión Cultural</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- MENÚ DESPLEGABLE: SEMESTRE -->
+                    <div class="form-group">
+                        <label for="semestre">Semestre <span class="required-asterisk">*</span></label>
+                        <select id="semestre" name="semestre" class="form-input" required>
+                            <option value="" disabled selected>Selecciona tu semestre...</option>
+                            <option value="1.º Semestre">1.º Semestre</option>
+                            <option value="2.º Semestre">2.º Semestre</option>
+                            <option value="3.º Semestre">3.er Semestre</option>
+                            <option value="4.º Semestre">4.º Semestre</option>
+                            <option value="5.º Semestre">5.º Semestre</option>
+                            <option value="6.º Semestre">6.º Semestre</option>
+                            <option value="7.º Semestre">7.º Semestre</option>
+                            <option value="8.º Semestre">8.º Semestre</option>
+                            <option value="9.º Semestre">9.º Semestre</option>
+                            <option value="10.º Semestre">10.º Semestre</option>
+                            <option value="Egresado / En trámite">Egresado / En trámite</option>
+                        </select>
+                    </div>
+
+                    <!-- LEYENDA INFORMATIVA PARA LOS ARCHIVOS REQUERIDOS -->
+                    <div class="info-files-legend">
+                        <span>ℹ️</span>
+                        <span>Los siguientes archivos son obligatorios para la validación y correcta impresión de tu credencial física SPE.</span>
+                    </div>
+
+                    <!-- CAMPOS FILE REQUERIDOS CONECTADOS A FLASK -->
+                    <div class="form-group">
+                        <label for="foto">Foto de rostro (Para credencial SPE) <span class="required-asterisk">*</span></label>
+                        <div class="file-upload-box">
+                            <input type="file" id="foto" name="foto" accept="image/*" class="file-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="credencial">Credencial institucional digital / fisica <span class="required-asterisk">*</span></label>
+                        <div class="file-upload-box">
+                            <input type="file" id="credencial" name="credencial" accept="image/*,.pdf" class="file-input" required>
+                        </div>
+                    </div>
+
+                    <!-- BOTÓN OFICIAL DE ENVÍO -->
+                    <button type="submit" class="btn-submit">
+                        SOLICITAR CREDENCIAL →
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 4. FOOTER INSTITUCIONAL -->
+    <footer class="footer">
+        <div>
+            <div class="footer-brand">SPE Student Chapter</div>
+            <p class="footer-copy">© 2026 SPE Student Chapter. Bridging student life and smart savings.</p>
+        </div>
+        <div class="footer-links-group">
+            <div class="footer-links-column">
+                <a href="#">Partners</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-links-column">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
