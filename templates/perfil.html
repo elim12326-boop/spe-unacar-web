@@ -17,9 +17,9 @@
         body { 
             background-color: #f1f5f9; 
             color: #1a1a1a; 
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            width: 100%;
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            width: 100%; 
         }
 
         /* CABECERA CON CURSOR ZOOM-IN PARA LIGHTBOX */
@@ -48,11 +48,55 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10;
+            z-index: 20;
             background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 100%);
             cursor: default;
         }
-        .navbar-overlay .logo-img { height: 40px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+        
+        /* GRUPO DE LOGOS Y BREADCRUMBS EN ESCRITORIO */
+        .header-left-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        /* CONTENEDOR CON FONDO SUTIL Y CENTRADO DE LOGOS */
+        .navbar-logos-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 14px;
+            padding: 6px 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+        .header-logo-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        .header-logo-link:hover {
+            transform: scale(1.03);
+        }
+        .navbar-overlay .logo-unacar-img { 
+            height: 58px; 
+            width: auto; 
+            max-height: 58px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35)); 
+            display: block;
+        }
+        .navbar-overlay .logo-img { 
+            height: 54px; 
+            width: auto; 
+            max-height: 54px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35)); 
+            display: block;
+        }
         
         .nav-menu {
             display: flex;
@@ -68,6 +112,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            transition: color 0.2s ease;
         }
         .nav-link:hover { color: #d0e4ff; }
         
@@ -88,22 +133,39 @@
         }
         .btn-get-card:hover { background-color: #002244; }
 
-        /* BREADCRUMBS */
+        /* Botón de Menú Hamburguesa Móvil (oculto en desktop) */
+        .btn-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            z-index: 30;
+        }
+        .btn-hamburger span {
+            display: block;
+            width: 26px;
+            height: 3px;
+            margin: 5px 0;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* BREADCRUMBS INTEGRADOS AL LADO DE LOS LOGOS */
         .breadcrumbs-bar {
-            position: absolute;
-            top: 75px;
-            left: 60px;
-            z-index: 10;
             display: flex;
             align-items: center;
             gap: 8px;
             font-family: 'Space Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             font-weight: 700;
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.75);
             text-shadow: 0 1px 3px rgba(0,0,0,0.8);
             cursor: default;
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            padding-left: 18px;
         }
         .breadcrumbs-bar a {
             color: #ffffff;
@@ -155,7 +217,7 @@
             cursor: default;
         }
 
-        /* 2. LOGO FLOTANTE COMO CÍRCULO COMPLETO CON RELIEVE Y BORDE GRUESO */
+        /* LOGO FLOTANTE COMO CÍRCULO COMPLETO CON RELIEVE Y BORDE GRUESO */
         .profile-avatar {
             width: 110px;
             height: 110px;
@@ -1118,19 +1180,250 @@
             font-family: 'Space Mono', monospace;
         }
 
+        /* ========================================================
+           OPTIMIZACIONES EXCLUSIVAS PARA MÓVIL (MAX-WIDTH: 768PX)
+           ======================================================== */
         @media (max-width: 768px) {
-            .mobile-sticky-bar { display: flex; }
-            .container { padding-bottom: 90px; }
-            .breadcrumbs-bar { left: 20px; top: 70px; }
+            /* 1. NAVBAR MÓVIL: AMBOS LOGOTIPOS Y MENÚ HAMBURGUESA */
+            .navbar-overlay {
+                padding: 10px 1rem;
+            }
+            .header-left-group {
+                gap: 10px;
+            }
+            .navbar-logos-group {
+                gap: 10px;
+                padding: 5px 10px;
+                border-radius: 10px;
+            }
+            .navbar-overlay .logo-unacar-img {
+                height: 34px;
+                max-height: 34px;
+                filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+                display: block;
+            }
+            .navbar-overlay .logo-img {
+                height: 32px;
+                max-height: 32px;
+                filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+                display: block;
+            }
+
+            .btn-hamburger {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #003366;
+                padding: 18px 1rem;
+                gap: 14px;
+                border-top: 1px solid rgba(255, 255, 255, 0.15);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+                z-index: 50;
+            }
+            .nav-menu.active {
+                display: flex;
+            }
+            .nav-link {
+                text-align: center;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.85rem;
+            }
+            .btn-get-card {
+                width: 100%;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+
+            /* 2. OCULTAR ELEMENTOS REDUNDANTES EN MÓVIL */
+            .breadcrumbs-bar {
+                display: none !important;
+            }
+            .btn-share {
+                display: none !important;
+            }
+            .badge-price-mobile-hide {
+                display: none !important;
+            }
+            .btn-copy-address {
+                display: none !important;
+            }
+
+            /* 3. MEDIDA EXACTA DE LA PORTADA CON ALTA RESOLUCIÓN */
+            .profile-hero {
+                height: 210px !important;
+                min-height: 210px !important;
+                overflow: visible !important;
+                margin-bottom: 60px !important;
+            }
+            .profile-hero-img {
+                height: 210px !important;
+                width: 100% !important;
+                object-fit: cover !important;
+                object-position: center !important;
+                image-rendering: -webkit-optimize-contrast;
+            }
+
+            /* 4. TARJETA SOBREPUESTA A LA MITAD (50% OVERLAP) */
+            .profile-hero-overlay {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 0 1rem !important;
+                background: none !important;
+                transform: translateY(50%) !important;
+                z-index: 15;
+            }
+            .hero-brand-card {
+                width: 100%;
+                background: #001f3f !important;
+                border: 1px solid rgba(255, 255, 255, 0.25) !important;
+                border-radius: 18px;
+                padding: 12px 14px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            }
+            .profile-avatar {
+                width: 65px;
+                height: 65px;
+                border-width: 3px;
+                flex-shrink: 0;
+            }
+            .profile-title {
+                font-size: 1.7rem;
+                line-height: 1.05;
+                margin-bottom: 2px;
+            }
+            .profile-address.touch-copy-address {
+                font-size: 0.74rem;
+                cursor: pointer;
+                display: inline-block;
+                line-height: 1.25;
+            }
+            .profile-address.touch-copy-address:active {
+                opacity: 0.6;
+            }
+
+            /* 5. CONTENEDOR LINEAL EN 1 SOLA COLUMNA CON px-4 */
+            .container { 
+                margin-top: 15px;
+                padding: 0 1rem 110px 1rem;
+                width: 100% !important;
+            }
+            .profile-grid { 
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                gap: 0 !important;
+            }
+            .main-column,
+            .sidebar-column { 
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                position: static !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* 6. BLOQUE DE CONVERSIÓN INMEDIATO (MENÚ PDF + CUPÓN) */
+            .extra-actions-bar {
+                margin-bottom: 14px;
+                gap: 8px;
+            }
+            .coupon-banner {
+                border-radius: 18px;
+                padding: 18px 14px;
+                margin-bottom: 16px;
+            }
+            .coupon-percent {
+                font-size: 2.8rem;
+            }
+            .coupon-info h3 {
+                font-size: 1.25rem;
+            }
+            .btn-use-discount {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                font-size: 0.8rem;
+            }
+
+            /* 7. TARJETAS MODULARES LIMPIAS (rounded-2xl) */
+            .content-card {
+                border-radius: 20px;
+                padding: 18px 14px;
+                margin-bottom: 16px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            }
+            .content-card h3 {
+                font-size: 1.35rem;
+                margin-bottom: 12px;
+            }
+
+            /* 8. CARRUSEL HORIZONTAL TÁCTIL EN GALERÍA */
+            .gallery-grid {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                scroll-snap-type: x mandatory;
+                gap: 10px !important;
+                padding-bottom: 6px;
+                margin-top: 10px !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .gallery-item {
+                flex: 0 0 190px !important;
+                width: 190px !important;
+                height: 145px !important;
+                scroll-snap-align: start;
+                border-radius: 12px;
+            }
+
+            /* 9. BARRA FIJA INFERIOR */
+            .mobile-sticky-bar { 
+                display: flex; 
+                height: 62px;
+                padding: 6px 14px;
+            }
+            .mobile-sticky-discount {
+                font-size: 1.45rem;
+            }
+
+            /* RESPUESTA TÁCTIL */
+            .btn-use-discount:active,
+            .btn-mobile-discount:active,
+            .btn-whatsapp:active,
+            .btn-save-vcf:active,
+            .btn-directions:active,
+            .btn-view-similar:active,
+            .btn-mobile-wpp:active {
+                transform: scale(0.97);
+            }
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 900px) and (min-width: 769px) {
             .profile-grid { grid-template-columns: 1fr; }
             .sidebar-column { position: static; }
-            .profile-hero { height: auto; min-height: 440px; }
             .hero-brand-card { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .navbar-overlay, .profile-hero-overlay { padding-left: 20px; padding-right: 20px; }
-            .gallery-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
             .coupon-banner { flex-direction: column; align-items: flex-start; }
             .special-product-card { flex: 0 0 210px; width: 210px; }
             .extra-actions-bar { flex-direction: column; }
@@ -1144,29 +1437,49 @@
     {% set portada_src = url_for('static', filename='fotos/' + local['foto_portada']) if local['foto_portada'] else (url_for('static', filename='fotos/' + local['foto']) if local['foto'] else '') %}
 
     <div class="profile-hero" {% if portada_src %}onclick="openLightbox('{{ portada_src }}')"{% endif %} title="Toca para ampliar imagen de portada">
+        
+        <!-- NAVBAR SUPERIOR CON LOGOS DUALES EN CÁPSULA Y BREADCRUMBS -->
         <nav class="navbar-overlay" onclick="event.stopPropagation()">
-            <a href="/">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo SPE" class="logo-img">
-            </a>
-            <div class="nav-menu">
+            <div class="header-left-group">
+                <div class="navbar-logos-group">
+                    <a href="https://www.unacar.mx/" target="_blank" rel="noopener noreferrer" class="header-logo-link" title="Universidad Autónoma del Carmen (UNACAR) Oficial">
+                        <img src="{{ url_for('static', filename='unacar.png') }}" alt="Logo UNACAR" class="logo-unacar-img">
+                    </a>
+                    <a href="https://www.spe.org/" target="_blank" rel="noopener noreferrer" class="header-logo-link" title="Society of Petroleum Engineers (SPE) Oficial">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo SPE" class="logo-img">
+                    </a>
+                </div>
+
+                <!-- BREADCRUMBS ALINEADOS AL LADO DE LOS LOGOS EN ESCRITORIO -->
+                <div class="breadcrumbs-bar">
+                    <a href="/">Inicio</a>
+                    <span class="breadcrumbs-separator">/</span>
+                    <a href="/directorio">Directorio</a>
+                    {% if local['categoria'] %}
+                    <span class="breadcrumbs-separator">/</span>
+                    <a href="/directorio?categoria={{ local['categoria'] }}">{{ local['categoria'] }}</a>
+                    {% endif %}
+                    <span class="breadcrumbs-separator">/</span>
+                    <span class="breadcrumbs-current">{{ local['nombre'] }}</span>
+                </div>
+            </div>
+
+            <!-- Botón Hamburguesa Móvil (☰) -->
+            <button class="btn-hamburger" id="nav-toggle-btn" aria-label="Abrir menú de navegación">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Menú de Enlaces con Accesos Oficiales UNACAR y SPE -->
+            <div class="nav-menu" id="nav-menu-panel">
                 <a href="/" class="nav-link">Inicio</a>
                 <a href="/directorio" class="nav-link">Directorio</a>
-                <a href="#" class="btn-get-card">Get Card</a>
+                <a href="https://www.unacar.mx/" target="_blank" rel="noopener noreferrer" class="nav-link">UNACAR</a>
+                <a href="https://www.spe.org/" target="_blank" rel="noopener noreferrer" class="nav-link">SPE</a>
+                <a href="/credencial" class="btn-get-card">Get Card</a>
             </div>
         </nav>
-
-        <!-- BREADCRUMBS -->
-        <div class="breadcrumbs-bar" onclick="event.stopPropagation()">
-            <a href="/">Inicio</a>
-            <span class="breadcrumbs-separator">/</span>
-            <a href="/directorio">Directorio</a>
-            {% if local['categoria'] %}
-            <span class="breadcrumbs-separator">/</span>
-            <a href="/directorio?categoria={{ local['categoria'] }}">{{ local['categoria'] }}</a>
-            {% endif %}
-            <span class="breadcrumbs-separator">/</span>
-            <span class="breadcrumbs-current">{{ local['nombre'] }}</span>
-        </div>
 
         {% if local['foto_portada'] %}
         <img src="{{ url_for('static', filename='fotos/' + local['foto_portada']) }}" alt="{{ local['nombre'] }}" class="profile-hero-img">
@@ -1176,11 +1489,11 @@
         <div style="width:100%; height:100%; background:#002244;"></div>
         {% endif %}
         
-        <!-- DEGRADADO Y BLOQUE TRASLÚCIDO DE MARCA -->
+        <!-- DEGRADADO Y BLOQUE TRASLÚCIDO DE MARCA (SOBREPUESTO A LA MITAD EN MÓVIL) -->
         <div class="profile-hero-overlay" onclick="event.stopPropagation()">
             <div class="hero-brand-card">
                 
-                <!-- 2. FOTO DE PERFIL COMO CÍRCULO COMPLETO CON RELIEVE Y BORDE DE 4PX -->
+                <!-- FOTO DE PERFIL COMO CÍRCULO COMPLETO CON RELIEVE -->
                 {% set avatar_src = url_for('static', filename='fotos/' + local['foto_perfil']) if local['foto_perfil'] else (url_for('static', filename='fotos/' + local['foto']) if local['foto'] else '') %}
                 
                 <div class="profile-avatar" {% if avatar_src %}onclick="openLightbox('{{ avatar_src }}')"{% endif %} title="Toca para ampliar logo">
@@ -1199,11 +1512,14 @@
                             {% if local['categoria'] %}
                             <span class="badge-pill">{{ local['categoria'] }}</span>
                             {% endif %}
+                            
+                            <!-- BADGE DE PRECIO OCULTO EN MÓVIL -->
                             {% if local['rango_precio'] %}
-                            <span class="badge-pill">{{ local['rango_precio'] }}</span>
+                            <span class="badge-pill badge-price-mobile-hide">{{ local['rango_precio'] }}</span>
                             {% endif %}
                         </div>
 
+                        <!-- BOTÓN COMPARTIR (VISIBLE EN PC, OCULTO EN MÓVIL) -->
                         <button type="button" class="btn-share" onclick="compartirLocal()">
                             🔗 Compartir
                             <span class="share-tooltip" id="share-tooltip">¡Enlace copiado!</span>
@@ -1212,9 +1528,11 @@
 
                     <h1 class="profile-title">{{ local['nombre'] }}</h1>
                     
+                    <!-- DIRECCIÓN TÁCTIL (EN MÓVIL COPIA DIRECTAMENTE AL TOCAR EL TEXTO) -->
                     {% if local['direccion'] %}
                     <div class="profile-address-box">
-                        <p class="profile-address">📍 {{ local['direccion'] }}</p>
+                        <span class="profile-address touch-copy-address" onclick="copiarDireccionDirecta(this, '{{ local['direccion'] }}')" title="Toca para copiar dirección">📍 {{ local['direccion'] }}</span>
+                        <!-- BOTÓN COPIAR CLÁSICO (VISIBLE EN PC, OCULTO EN MÓVIL) -->
                         <button type="button" class="btn-copy-address" id="btn-copy-hero" onclick="copiarTexto('{{ local['direccion'] }}', 'btn-copy-hero')" title="Copiar dirección">
                             📋 Copiar
                         </button>
@@ -1227,7 +1545,7 @@
 
     <div class="container">
 
-        <!-- BOTONES CONDICIONALES: MENÚ Y CITAS -->
+        <!-- 1. BLOQUE DE CONVERSIÓN INMEDIATO: MENÚ PDF / AGENDAR CITA -->
         {% if local['archivo_menu'] or local['enlace_citas'] %}
         <div class="extra-actions-bar">
             {% if local['archivo_menu'] %}
@@ -1251,7 +1569,7 @@
         </div>
         {% endif %}
 
-        <!-- TARJETA DEL DESCUENTO ESTILO CUPÓN / VOUCHER -->
+        <!-- 2. TARJETA DESTACADA DEL DESCUENTO ESTILO CUPÓN / VOUCHER -->
         {% if local['descuento'] %}
         <div class="coupon-banner">
             <div class="coupon-left">
@@ -1268,12 +1586,13 @@
         </div>
         {% endif %}
 
+        <!-- 3. ESTRUCTURA EN TARJETAS MODULARES EN ORDEN ESTRICTO DE ESCRITORIO -->
         <div class="profile-grid">
             
             <!-- COLUMNA IZQUIERDA -->
             <div class="main-column">
                 
-                <!-- ESPECIALES: SE OCULTA SI NO HAY ESPECIALES -->
+                <!-- 1️⃣ ESPECIALES PARA ESTUDIANTES -->
                 {% if especiales and especiales|length > 0 %}
                 <div class="content-card specials-card">
                     <h3>{{ local['titulo_especiales'] if local['titulo_especiales'] else 'Especiales para Estudiantes' }}</h3>
@@ -1310,7 +1629,7 @@
                 </div>
                 {% endif %}
 
-                <!-- SOBRE NOSOTROS CON TEXTO COLAPSABLE "LEER MÁS" -->
+                <!-- 2️⃣ SOBRE NOSOTROS -->
                 <div class="content-card">
                     <h3>Sobre nosotros</h3>
                     <div class="collapsible-text-wrapper" id="about-text-wrapper">
@@ -1328,7 +1647,7 @@
                     {% endif %}
                 </div>
 
-                <!-- GALERÍA DE FOTOS CON ZOOM Y LIGHTBOX -->
+                <!-- 3️⃣ GALERÍA DE FOTOS (CARRUSEL TÁCTIL) -->
                 {% if fotos_galeria and fotos_galeria|length > 0 %}
                 <div class="content-card">
                     <h3>Galería de fotos</h3>
@@ -1344,10 +1663,10 @@
 
             </div>
 
-            <!-- COLUMNA DERECHA (STICKY SIDEBAR) -->
+            <!-- COLUMNA DERECHA -->
             <div class="sidebar-column">
                 
-                <!-- CONTACTO -->
+                <!-- 4️⃣ CONTACTO -->
                 <div class="content-card">
                     <h3>Contacto</h3>
                     
@@ -1383,7 +1702,7 @@
                     </div>
                 </div>
 
-                <!-- HORARIOS -->
+                <!-- 5️⃣ HORARIOS Y ESTATUS -->
                 {% if local['horarios'] %}
                 <div class="content-card">
                     <h3>Horarios</h3>
@@ -1394,7 +1713,7 @@
                 </div>
                 {% endif %}
 
-                <!-- UBICACIÓN -->
+                <!-- 6️⃣ UBICACIÓN Y MAPA -->
                 <div class="content-card">
                     <h3>📍 Ubicación</h3>
                     {% if local['direccion'] %}
@@ -1423,7 +1742,7 @@
                     {% endif %}
                 </div>
 
-                <!-- CONDICIONES -->
+                <!-- 7️⃣ CONDICIONES DEL BENEFICIO -->
                 <div class="content-card">
                     <h3>Condiciones</h3>
                     <ul class="conditions-list">
@@ -1469,7 +1788,7 @@
 
     </div>
 
-    <!-- BARRA FIJA EN MÓVILES -->
+    <!-- BARRA FIJA EN MÓVILES (BOTTOM ACTION BAR) -->
     <div class="mobile-sticky-bar">
         <div class="mobile-sticky-left">
             <span class="mobile-sticky-discount">{{ local['descuento'] }}</span>
@@ -1531,6 +1850,21 @@
     </div>
 
     <script>
+        // Control del Menú Hamburguesa Móvil
+        const navToggleBtn = document.getElementById('nav-toggle-btn');
+        const navMenuPanel = document.getElementById('nav-menu-panel');
+
+        if (navToggleBtn && navMenuPanel) {
+            navToggleBtn.addEventListener('click', () => {
+                navMenuPanel.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (!navToggleBtn.contains(e.target) && !navMenuPanel.contains(e.target)) {
+                    navMenuPanel.classList.remove('active');
+                }
+            });
+        }
+
         // Modal de Descuento
         function abrirModalDescuento() {
             document.getElementById('modal-descuento').style.display = 'flex';
@@ -1611,12 +1945,23 @@
             }
         }
 
-        // Copiar dirección
+        // Copiar dirección al tocar el texto directamente
+        function copiarDireccionDirecta(elemento, texto) {
+            navigator.clipboard.writeText(texto).then(() => {
+                const original = elemento.innerHTML;
+                elemento.innerHTML = "✓ ¡Copiado!";
+                setTimeout(() => {
+                    elemento.innerHTML = original;
+                }, 1800);
+            });
+        }
+
+        // Copiar dirección con botón clásico (PC)
         function copiarTexto(texto, btnId) {
             navigator.clipboard.writeText(texto).then(() => {
                 const btn = document.getElementById(btnId);
                 const original = btn.innerHTML;
-                btn.innerHTML = "✓ ¡Copiada!";
+                btn.innerHTML = "✓ Copiado";
                 setTimeout(() => {
                     btn.innerHTML = original;
                 }, 2000);
