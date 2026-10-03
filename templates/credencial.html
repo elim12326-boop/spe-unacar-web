@@ -16,10 +16,10 @@
             background-color: #f8fafc; 
             color: #000000; 
             font-family: 'Inter', sans-serif; 
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            overflow-x: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
         }
 
         /* 1. NAVBAR INSTITUCIONAL UNIFICADO EN AZUL MARINO */
@@ -29,28 +29,46 @@
             width: 100%;
             border-bottom: 2px solid #002244;
             box-shadow: 0 4px 15px rgba(0, 51, 102, 0.15);
-            padding: 12px 40px;
+            padding: 14px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
+        /* RECUADRO MÁS BLANCO DETRÁS DE LOS LOGOS PARA CONTRASTE PERFECTO */
         .header-logos {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 16px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 8px 18px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+        }
+        .header-logo-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        .header-logo-link:hover {
+            transform: scale(1.03);
         }
         .header-logo-img {
-            height: 65px;
+            height: 80px;
             width: auto;
+            max-height: 80px;
             object-fit: contain;
             display: block;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
         }
         .header-logo-divider {
-            height: 45px;
-            width: 1px;
-            background-color: rgba(255, 255, 255, 0.4);
+            height: 50px;
+            width: 1.5px;
+            background-color: #cbd5e1;
         }
 
         .nav-links {
@@ -85,10 +103,30 @@
             transition: background 0.2s ease;
             border: 1.5px solid rgba(255, 255, 255, 0.4);
             box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
         }
         .btn-get-card:hover { 
             background-color: #001122; 
             border-color: #ffffff;
+        }
+
+        /* Botón Hamburguesa Móvil (oculto en desktop) */
+        .btn-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 30;
+        }
+        .btn-hamburger span {
+            display: block;
+            width: 26px;
+            height: 3px;
+            margin: 5px 0;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
         }
 
         /* 2. MAQUETACIÓN EN DOS COLUMNAS */
@@ -165,7 +203,7 @@
             margin-bottom: 24px;
         }
 
-        /* 1. CAJA DE REQUISITOS */
+        /* CAJA DE REQUISITOS */
         .requirements-box {
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
@@ -395,31 +433,295 @@
         }
         .footer-links-column a:hover { color: #003366; }
 
-        @media (max-width: 900px) {
-            .header-navbar { padding: 12px 20px; }
-            .grid-container { grid-template-columns: 1fr; gap: 35px; }
-            .info-title { font-size: 2.8rem; }
-            .footer { flex-direction: column; padding: 35px 20px; }
+        /* BARRA INFERIOR FLOTANTE (OCULTA EN ESCRITORIO) */
+        .mobile-bottom-nav {
+            display: none;
+        }
+
+        /* ========================================================
+           AJUSTES RESPONSIVOS EXCLUSIVOS PARA MÓVILES (MAX-WIDTH: 768PX)
+           ======================================================== */
+        @media screen and (max-width: 768px) {
+            /* 1. SMART STICKY HEADER MÓVIL */
+            .header-navbar { 
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 100;
+                padding: 10px 1.25rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: transform 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
+            }
+            .header-navbar.header-hidden {
+                transform: translateY(-100%);
+            }
+
+            /* RECUADRO MÁS BLANCO EN MÓVIL */
+            .header-logos {
+                gap: 10px;
+                padding: 5px 12px;
+                border-radius: 10px;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+            }
+            .header-logo-img { 
+                height: 38px; 
+                max-height: 38px;
+            }
+            .header-logo-divider { 
+                height: 24px; 
+                background-color: #cbd5e1;
+            }
+
+            .btn-hamburger {
+                display: block;
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #003366;
+                padding: 18px 1.25rem 24px 1.25rem;
+                gap: 16px;
+                border-top: 1px solid rgba(255, 255, 255, 0.15);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+                z-index: 50;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-link {
+                font-size: 0.82rem;
+                text-align: center;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .btn-get-card {
+                width: 100%;
+                min-height: 46px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+
+            /* 2. FLUJO VERTICAL CON COMPENSACIÓN POR HEADER FIJO Y ESPACIO PARA BOTTOM BAR */
+            .main-wrapper { 
+                margin-top: 65px;
+                padding: 20px 1.25rem 80px 1.25rem;
+            }
+            .grid-container { 
+                grid-template-columns: 1fr;
+                gap: 22px; 
+            }
+
+            /* 3. TIPOGRAFÍA FLUIDA CLAMP */
+            .info-tag {
+                font-size: 0.72rem;
+                letter-spacing: 1.2px;
+            }
+            .info-title { 
+                font-size: clamp(1.9rem, 7.2vw, 2.8rem);
+                line-height: 1.05;
+                margin-bottom: 12px;
+            }
+            .info-desc { 
+                font-size: 0.9rem;
+                line-height: 1.5;
+                margin-bottom: 18px;
+            }
+
+            /* 4. MODERN SOFT ROUNDED UI EN CAJAS Y TARJETA DE FORMULARIO (rounded-2xl) */
+            .requirements-box {
+                padding: 20px 16px;
+                border-radius: 22px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+                animation: mobileFadeIn 0.4s ease-out;
+            }
+            .requirements-box h3 {
+                font-size: 0.78rem;
+                margin-bottom: 12px;
+            }
+            .req-item {
+                font-size: 0.82rem;
+                gap: 10px;
+            }
+
+            .form-card { 
+                padding: 24px 16px; 
+                border-radius: 22px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+                animation: mobileFadeIn 0.5s ease-out;
+            }
+            .form-header-title { 
+                font-size: clamp(1.6rem, 5.8vw, 2rem);
+                margin-bottom: 18px;
+            }
+            .form-group {
+                margin-bottom: 16px;
+            }
+            .form-group label {
+                font-size: 0.72rem;
+            }
+            .form-input {
+                padding: 12px 14px;
+                min-height: 46px;
+                font-size: 0.88rem;
+                border-radius: 10px;
+            }
+            select.form-input {
+                padding-right: 36px;
+            }
+
+            /* LEYENDA Y CAMPOS DE ARCHIVOS */
+            .info-files-legend {
+                padding: 12px 14px;
+                font-size: 0.76rem;
+                border-radius: 12px;
+                margin-bottom: 16px;
+            }
+            .file-upload-box {
+                padding: 10px 12px;
+                min-height: 48px;
+                border-radius: 10px;
+            }
+            .file-input {
+                font-size: 0.75rem;
+            }
+            .file-input::file-selector-button {
+                padding: 8px 12px;
+                font-size: 0.7rem;
+                margin-right: 8px;
+                border-radius: 6px;
+            }
+
+            /* BOTÓN DE ACCIÓN TÁCTIL */
+            .btn-submit {
+                padding: 14px;
+                min-height: 48px;
+                font-size: 0.82rem;
+                letter-spacing: 1px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* ELIMINACIÓN DE HOVERS FANTASMA Y RESPUESTA TÁCTIL */
+            .btn-submit:hover,
+            .btn-get-card:hover {
+                transform: none;
+            }
+            .btn-submit:active,
+            .btn-get-card:active,
+            .file-upload-box:active {
+                transform: scale(0.97);
+            }
+
+            /* FOOTER */
+            .footer { 
+                flex-direction: column; 
+                padding: 30px 1.25rem 80px 1.25rem; 
+                gap: 22px; 
+            }
+            .footer-links-group {
+                gap: 32px;
+            }
+
+            /* 5. BARRA INFERIOR DE ACCESO RÁPIDO */
+            .mobile-bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 56px;
+                background: #ffffff;
+                border-top: 1px solid #e2e8f0;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.06);
+                z-index: 100;
+                justify-content: space-around;
+                align-items: center;
+            }
+            .mobile-bottom-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                color: #555555;
+                font-family: 'Space Mono', monospace;
+                font-size: 9px;
+                letter-spacing: 0.5px;
+                flex: 1;
+                height: 100%;
+                gap: 3px;
+                transition: color 0.15s;
+            }
+            .mobile-bottom-item svg {
+                width: 20px;
+                height: 20px;
+                stroke: currentColor;
+            }
+            .mobile-bottom-item.active,
+            .mobile-bottom-item:active {
+                color: #003366;
+                font-weight: 700;
+            }
+
+            @keyframes mobileFadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(5px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
         }
     </style>
 </head>
 <body>
 
     <!-- 1. NAVBAR INSTITUCIONAL UNIFICADO -->
-    <header class="header-navbar">
+    <header class="header-navbar" id="header-navbar">
+        <!-- LOGOS INSTITUCIONALES EN RECUADRO MÁS BLANCO, PERFECTAMENTE CENTRADOS -->
         <div class="header-logos">
-            <a href="/" title="UNACAR">
+            <a href="https://www.unacar.mx/" target="_blank" rel="noopener noreferrer" class="header-logo-link" title="Universidad Autónoma del Carmen (UNACAR) Oficial">
                 <img src="{{ url_for('static', filename='unacar.png') }}" alt="Logo UNACAR" class="header-logo-img">
             </a>
             <div class="header-logo-divider"></div>
-            <a href="/" title="SPE">
+            <a href="https://www.spe.org/" target="_blank" rel="noopener noreferrer" class="header-logo-link" title="Society of Petroleum Engineers (SPE) Oficial">
                 <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo SPE" class="header-logo-img">
             </a>
         </div>
 
-        <nav class="nav-links">
+        <!-- Botón Hamburguesa Móvil (☰) -->
+        <button class="btn-hamburger" id="cred-hamburger-btn" aria-label="Abrir menú de navegación">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Menú de Enlaces con Accesos Oficiales UNACAR y SPE -->
+        <nav class="nav-links" id="cred-nav-links">
             <a href="/" class="nav-link">Inicio</a>
             <a href="/directorio" class="nav-link">Directorio</a>
+            <a href="https://www.unacar.mx/" target="_blank" rel="noopener noreferrer" class="nav-link">UNACAR</a>
+            <a href="https://www.spe.org/" target="_blank" rel="noopener noreferrer" class="nav-link">SPE</a>
             <a href="/credencial" class="btn-get-card">Get Card</a>
         </nav>
     </header>
@@ -428,7 +730,7 @@
     <main class="main-wrapper">
         <div class="grid-container">
             
-            <!-- COLUMNA IZQUIERDA: INFORMATIVA + REQUISITOS (MOCKUP EN BLANCO) -->
+            <!-- COLUMNA IZQUIERDA: INFORMATIVA + REQUISITOS -->
             <div>
                 <p class="info-tag">SPE MEMBERSHIP NETWORK</p>
                 <h1 class="info-title">Solicita tu Membresía SPE</h1>
@@ -436,7 +738,7 @@
                     Tu pasaporte hacia el ahorro inteligente. Acceso ilimitado a convenios preferenciales y descuentos exclusivos para la comunidad universitaria en comercios locales de la isla.
                 </p>
 
-                <!-- 1. REQUISITOS ESTILIZADOS CON CHECKS VERDES -->
+                <!-- REQUISITOS ESTILIZADOS CON CHECKS VERDES -->
                 <div class="requirements-box">
                     <h3>Requisitos para el registro</h3>
                     <ul class="req-list">
@@ -579,7 +881,7 @@
 
                     <!-- LEYENDA INFORMATIVA PARA LOS ARCHIVOS REQUERIDOS -->
                     <div class="info-files-legend">
-                        <span>ℹ️</span>
+                        <span>ℹ</span>
                         <span>Los siguientes archivos son obligatorios para la validación y correcta impresión de tu credencial física SPE.</span>
                     </div>
 
@@ -616,8 +918,8 @@
         </div>
         <div class="footer-links-group">
             <div class="footer-links-column">
-                <a href="#">Partners</a>
-                <a href="#">Contact</a>
+                <a href="https://www.unacar.mx/" target="_blank" rel="noopener noreferrer">UNACAR</a>
+                <a href="https://www.spe.org/" target="_blank" rel="noopener noreferrer">SPE Internacional</a>
             </div>
             <div class="footer-links-column">
                 <a href="#">Privacy</a>
@@ -625,6 +927,58 @@
             </div>
         </div>
     </footer>
+
+    <!-- 5. BARRA DE NAVEGACIÓN FLOTANTE INFERIOR (SÓLO CELULARES) -->
+    <nav class="mobile-bottom-nav">
+        <a href="/" class="mobile-bottom-item">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span>INICIO</span>
+        </a>
+        <a href="/directorio" class="mobile-bottom-item">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            <span>DIRECTORIO</span>
+        </a>
+        <a href="/credencial" class="mobile-bottom-item active">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="2" stroke-width="2"/><line x1="7" y1="8" x2="17" y2="8" stroke-width="2"/><line x1="7" y1="12" x2="13" y2="12" stroke-width="2"/></svg>
+            <span>MEMBRESÍA</span>
+        </a>
+    </nav>
+
+    <!-- SCRIPTS EXCLUSIVOS MÓVILES -->
+    <script>
+        // 1. Control del Menú Hamburguesa Móvil
+        const credHamburgerBtn = document.getElementById('cred-hamburger-btn');
+        const credNavLinks = document.getElementById('cred-nav-links');
+
+        if (credHamburgerBtn && credNavLinks) {
+            credHamburgerBtn.addEventListener('click', () => {
+                credNavLinks.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!credHamburgerBtn.contains(e.target) && !credNavLinks.contains(e.target)) {
+                    credNavLinks.classList.remove('active');
+                }
+            });
+        }
+
+        // 2. Smart Sticky Header (Ocultamiento inteligente al hacer scroll en móvil)
+        let lastScrollY = window.scrollY;
+        const headerNavbar = document.getElementById('header-navbar');
+
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768 && headerNavbar) {
+                const currentScrollY = window.scrollY;
+                if (currentScrollY > lastScrollY && currentScrollY > 70) {
+                    headerNavbar.classList.add('header-hidden');
+                    if (credNavLinks) credNavLinks.classList.remove('active');
+                } else {
+                    headerNavbar.classList.remove('header-hidden');
+                }
+                lastScrollY = currentScrollY;
+            }
+        }, { passive: true });
+    </script>
 
 </body>
 </html>
