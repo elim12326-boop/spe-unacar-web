@@ -4,11 +4,23 @@ import urllib.parse
 import sqlite3
 from io import BytesIO
 from datetime import datetime, timedelta
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
 from werkzeug.utils import secure_filename
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from dotenv import load_dotenv
+from google import genai
+from google.genai import types
 
+# 1. Cargar las variables del archivo .env en memoria
+load_dotenv()
+
+app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "spe_unacar_secret_key_2026")
+
+# 2. Conectar el cliente de Gemini
+api_key = os.environ.get("GEMINI_API_KEY")
+gemini_client = genai.Client(api_key=api_key) if api_key else None
 app = Flask(__name__)
 app.secret_key = "SPE_UNACAR_SECURE_WEB_KEY_2026"
 
@@ -690,6 +702,69 @@ def exportar_excel():
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+def obtener_instrucciones_asistente():
+    """Lee tu base de datos y le enseña a la IA la información de los comercios."""
+    try:
+        conn = sqlite3.connect('spe_database.db')
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        locales = cur.execute("SELECT nombre, categoria, descuento, direccion, horarios, telefono FROM comercios").fetchall()
+        conn.close()
+        
+        lista_comercios = "\n".join([
+            f"- {l['nombre']} ({l['categoria']}): Ofrece {l['descuento']}. Ubicación: {l['direccion']}. Horario: {l['horarios']}. Teléfono/WhatsApp: {l['telefono']}."
+            for l in locales
+        ])
+    except Exception:
+        lista_comercios = "Directorio de comercios afiliados a SPE UNACAR en Ciudad del Carmen."
 
+    prompt = f"""
+Eres el Asistente Virtual Oficial de SPE Student Chapter UNACAR (Universidad Autónoma del Carmen) en Ciudad del Carmen.
+Tu labor es responder dudas a los estudiantes sobre convenios, descuentos y la credencial de membresía.
+
+INFORMACIÓN DE LA PLATAFORMA:
+1. Propósito: Brindar descuentos exclusivos a estudiantes universitarios afiliados mediante su credencial física oficial de SPE.
+2. Trámite de membresía (/credencial):
+   - Requisitos: Comprobante de inscripción/reinscripción UNACAR, fotografía infantil/rostro reciente y correo universitario activo (@mail.unacar.mx).
+   - Datos pedidos: Nombre, matrícula, carrera, semestre y número de teléfono.
+3. Uso de beneficios: El estudiante debe presentar su credencial física de SPE antes de pagar o pedir la cuenta en el local participante.
+
+COMERCIOS REGISTRADOS ACTUALMENTE:
+{lista_comercios}
+
+REGLAS PARA TUS RESPUESTAS:
+- Sé amable, claro, conciso y con tono universitario respetuoso.
+- Si te preguntan por un negocio en específico, indica su descuento, dirección y horario.
+- Si te piden sugerencias (ejemplo: 'dónde comer' o 'reparar una pantalla'), recomienda los comercios de esa categoría.
+- No inventes descuentos ni negocios que no estén en la lista. Si no tienes un dato, invita amablemente a revisar el Directorio.
+"""
+    return prompt
+
+@app.route('/api/chat', methods=['POST'])
+def api_chat():
+    """Ruta que recibe el mensaje del usuario y devuelve la respuesta de la IA."""
+    datos = request.get_json() or {}
+    mensaje = datos.get('mensaje', '').strip()
+
+    if not mensaje:
+        return jsonify({'error': 'El mensaje está vacío'}), 400
+
+    try:
+        instrucciones = obtener_instrucciones_asistente()
+        respuesta_ia = gemini_client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=mensaje,
+            config=types.GenerateContentConfig(
+                system_instruction=instrucciones,
+                temperature=0.3,
+                max_output_tokens=300
+            )
+        )
+        return jsonify({'respuesta': respuesta_ia.text})
+    except Exception as e:
+        print("--- ERROR REAL DE GEMINI ---")
+        print(e)
+        print("----------------------------")
+        return jsonify({'respuesta': 'Disculpa, ocurrió un detalle al conectar con el asistente. Inténtalo nuevamente en un momento.'}), 500
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
