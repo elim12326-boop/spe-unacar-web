@@ -444,17 +444,17 @@
         @media screen and (max-width: 768px) {
             /* 1. SMART STICKY HEADER MÓVIL */
             .header-navbar { 
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                z-index: 100;
-                padding: 10px 1.25rem;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                transition: transform 0.3s ease;
-                box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
+                position: fixed; 
+                top: 0; 
+                left: 0; 
+                width: 100%; 
+                z-index: 100; 
+                padding: 10px 1.25rem; 
+                display: flex; 
+                justify-content: space-between; 
+                align-items: center; 
+                transition: transform 0.3s ease; 
+                box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2); 
             }
             .header-navbar.header-hidden {
                 transform: translateY(-100%);
@@ -470,11 +470,11 @@
             }
             .header-logo-img { 
                 height: 38px; 
-                max-height: 38px;
+                max-height: 38px; 
             }
             .header-logo-divider { 
                 height: 24px; 
-                background-color: #cbd5e1;
+                background-color: #cbd5e1; 
             }
 
             .btn-hamburger {
@@ -519,11 +519,11 @@
 
             /* 2. FLUJO VERTICAL CON COMPENSACIÓN POR HEADER FIJO Y ESPACIO PARA BOTTOM BAR */
             .main-wrapper { 
-                margin-top: 65px;
-                padding: 20px 1.25rem 80px 1.25rem;
+                margin-top: 65px; 
+                padding: 20px 1.25rem 80px 1.25rem; 
             }
             .grid-container { 
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; 
                 gap: 22px; 
             }
 
@@ -533,14 +533,14 @@
                 letter-spacing: 1.2px;
             }
             .info-title { 
-                font-size: clamp(1.9rem, 7.2vw, 2.8rem);
-                line-height: 1.05;
-                margin-bottom: 12px;
+                font-size: clamp(1.9rem, 7.2vw, 2.8rem); 
+                line-height: 1.05; 
+                margin-bottom: 12px; 
             }
             .info-desc { 
-                font-size: 0.9rem;
-                line-height: 1.5;
-                margin-bottom: 18px;
+                font-size: 0.9rem; 
+                line-height: 1.5; 
+                margin-bottom: 18px; 
             }
 
             /* 4. MODERN SOFT ROUNDED UI EN CAJAS Y TARJETA DE FORMULARIO (rounded-2xl) */
@@ -561,13 +561,13 @@
 
             .form-card { 
                 padding: 24px 16px; 
-                border-radius: 22px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-                animation: mobileFadeIn 0.5s ease-out;
+                border-radius: 22px; 
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04); 
+                animation: mobileFadeIn 0.5s ease-out; 
             }
             .form-header-title { 
-                font-size: clamp(1.6rem, 5.8vw, 2rem);
-                margin-bottom: 18px;
+                font-size: clamp(1.6rem, 5.8vw, 2rem); 
+                margin-bottom: 18px; 
             }
             .form-group {
                 margin-bottom: 16px;
@@ -944,7 +944,202 @@
         </a>
     </nav>
 
-    <!-- SCRIPTS EXCLUSIVOS MÓVILES -->
+    <!-- ==========================================
+         BOTÓN Y VENTANA FLOTANTE DEL ASISTENTE IA (SPE UNACAR)
+         ========================================== -->
+    <div id="spe-ai-widget">
+        <!-- Botón redondo flotante -->
+        <button id="spe-ai-btn" title="Asistente Virtual SPE UNACAR" aria-label="Abrir asistente">
+            💬
+        </button>
+
+        <!-- Ventana de conversación -->
+        <div id="spe-ai-chatbox">
+            <div class="spe-ai-header">
+                <div class="spe-ai-header-info">
+                    <span class="spe-ai-status-dot"></span>
+                    <span>Asistente SPE UNACAR</span>
+                </div>
+                <button id="spe-ai-close" title="Cerrar chat">&times;</button>
+            </div>
+
+            <div id="spe-ai-messages">
+                <div class="spe-ai-msg spe-ai-bot">
+                    ¡Hola! Soy el asistente de <strong>SPE UNACAR</strong>. ¿Tienes alguna duda sobre los descuentos de los comercios afiliados o cómo tramitar tu membresía?
+                </div>
+            </div>
+
+            <form id="spe-ai-form">
+                <input type="text" id="spe-ai-input" placeholder="Pregunta sobre locales, trámites..." autocomplete="off" required>
+                <button type="submit" id="spe-ai-submit">➤</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        /* Estilos del widget flotante */
+        #spe-ai-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 25px;
+            z-index: 1200;
+            font-family: 'Inter', sans-serif;
+        }
+        #spe-ai-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background-color: #003366;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.35);
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        #spe-ai-btn:hover {
+            background-color: #002244;
+            transform: scale(1.06);
+        }
+        #spe-ai-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Ventana del chat */
+        #spe-ai-chatbox {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            bottom: 95px;
+            right: 25px;
+            width: 340px;
+            height: 440px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 1300;
+        }
+        .spe-ai-header {
+            background-color: #003366;
+            color: #ffffff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .spe-ai-header-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .spe-ai-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #22c55e;
+        }
+        #spe-ai-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 22px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        #spe-ai-messages {
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: #f8fafc;
+        }
+        .spe-ai-msg {
+            max-width: 86%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+        .spe-ai-bot {
+            align-self: flex-start;
+            background-color: #ffffff;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 2px;
+        }
+        .spe-ai-bot strong {
+            color: #003366;
+            font-weight: 700;
+        }
+        .spe-ai-bot ul, .spe-ai-bot ol {
+            margin: 6px 0 6px 16px;
+            padding: 0;
+        }
+        .spe-ai-bot li {
+            margin-bottom: 4px;
+        }
+        .spe-ai-user {
+            align-self: flex-end;
+            background-color: #003366;
+            color: #ffffff;
+            border-bottom-right-radius: 2px;
+        }
+        #spe-ai-form {
+            display: flex;
+            padding: 8px;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            gap: 6px;
+        }
+        #spe-ai-input {
+            flex: 1;
+            padding: 9px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            outline: none;
+        }
+        #spe-ai-input:focus {
+            border-color: #003366;
+        }
+        #spe-ai-submit {
+            background-color: #003366;
+            color: #ffffff;
+            border: none;
+            padding: 0 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* Adaptación para pantallas de celular */
+        @media (max-width: 768px) {
+            #spe-ai-widget {
+                bottom: 70px;
+                right: 15px;
+            }
+            #spe-ai-chatbox {
+                right: 10px;
+                left: 10px;
+                width: auto;
+                bottom: 70px;
+                height: 390px;
+            }
+        }
+    </style>
+
+    <!-- SCRIPTS EXCLUSIVOS MÓVILES + ASISTENTE IA -->
     <script>
         // 1. Control del Menú Hamburguesa Móvil
         const credHamburgerBtn = document.getElementById('cred-hamburger-btn');
@@ -978,6 +1173,109 @@
                 lastScrollY = currentScrollY;
             }
         }, { passive: true });
+
+        // 3. LÓGICA DEL ASISTENTE VIRTUAL SPE UNACAR
+        const speBtn = document.getElementById('spe-ai-btn');
+        const speBox = document.getElementById('spe-ai-chatbox');
+        const speClose = document.getElementById('spe-ai-close');
+        const speForm = document.getElementById('spe-ai-form');
+        const speInput = document.getElementById('spe-ai-input');
+        const speMsgs = document.getElementById('spe-ai-messages');
+
+        // Formateador limpio de texto para respuestas amigables
+        function formatearTextoIA(texto) {
+            if (!texto) return '';
+            let html = texto
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+
+            // Convertir negritas (**texto**)
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            // Separar por saltos de línea para estructurar listas
+            let lineas = html.split('\n');
+            let resultado = [];
+            let enLista = false;
+
+            lineas.forEach(linea => {
+                let limpia = linea.trim();
+                let matchLista = limpia.match(/^(\*|-|\d+\.)\s+(.+)/);
+
+                if (matchLista) {
+                    if (!enLista) {
+                        resultado.push('<ul>');
+                        enLista = true;
+                    }
+                    resultado.push(`<li>${matchLista[2]}</li>`);
+                } else {
+                    if (enLista) {
+                        resultado.push('</ul>');
+                        enLista = false;
+                    }
+                    if (limpia.length > 0) {
+                        resultado.push(`<p style="margin-bottom: 6px;">${limpia}</p>`);
+                    }
+                }
+            });
+
+            if (enLista) {
+                resultado.push('</ul>');
+            }
+
+            return resultado.join('');
+        }
+
+        // Abrir / Cerrar ventana
+        if (speBtn && speBox && speClose) {
+            speBtn.addEventListener('click', () => {
+                const estaVisible = speBox.style.display === 'flex';
+                speBox.style.display = estaVisible ? 'none' : 'flex';
+                if (!estaVisible && speInput) speInput.focus();
+            });
+
+            speClose.addEventListener('click', () => {
+                speBox.style.display = 'none';
+            });
+        }
+
+        // Enviar pregunta
+        if (speForm && speInput && speMsgs) {
+            speForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const texto = speInput.value.trim();
+                if (!texto) return;
+
+                // 1. Mostrar mensaje del usuario
+                const userBubble = document.createElement('div');
+                userBubble.className = 'spe-ai-msg spe-ai-user';
+                userBubble.textContent = texto;
+                speMsgs.appendChild(userBubble);
+                speInput.value = '';
+                speMsgs.scrollTop = speMsgs.scrollHeight;
+
+                // 2. Mostrar indicador de espera
+                const botBubble = document.createElement('div');
+                botBubble.className = 'spe-ai-msg spe-ai-bot';
+                botBubble.textContent = 'Consultando...';
+                speMsgs.appendChild(botBubble);
+                speMsgs.scrollTop = speMsgs.scrollHeight;
+
+                // 3. Consultar a Flask
+                try {
+                    const resp = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ mensaje: texto })
+                    });
+                    const data = await resp.json();
+                    botBubble.innerHTML = formatearTextoIA(data.respuesta || 'No pude procesar la respuesta.');
+                } catch (err) {
+                    botBubble.textContent = 'Hubo un error de conexión con el servidor.';
+                }
+                speMsgs.scrollTop = speMsgs.scrollHeight;
+            });
+        }
     </script>
 
 </body>
