@@ -1180,5 +1180,245 @@
         });
     </script>
 
+<!-- ==========================================
+     BOTÓN Y VENTANA FLOTANTE DEL ASISTENTE IA
+     ========================================== -->
+<div id="spe-ai-widget">
+    <!-- Botón redondo flotante -->
+    <button id="spe-ai-btn" title="Asistente Virtual SPE" aria-label="Abrir asistente">
+        💬
+    </button>
+
+    <!-- Ventana de conversación -->
+    <div id="spe-ai-chatbox">
+        <div class="spe-ai-header">
+            <div class="spe-ai-header-info">
+                <span class="spe-ai-status-dot"></span>
+                <span>Asistente SPE</span>
+            </div>
+            <button id="spe-ai-close" title="Cerrar chat">&times;</button>
+        </div>
+
+        <div id="spe-ai-messages">
+            <div class="spe-ai-msg spe-ai-bot">
+                ¡Hola! Soy el asistente de SPE UNACAR. ¿Tienes alguna duda sobre los descuentos de los comercios o cómo tramitar tu membresía?
+            </div>
+        </div>
+
+        <form id="spe-ai-form">
+            <input type="text" id="spe-ai-input" placeholder="Pregunta sobre locales, trámites..." autocomplete="off" required>
+            <button type="submit" id="spe-ai-submit">➤</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Estilos del botón flotante */
+    #spe-ai-widget {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        z-index: 1200;
+        font-family: 'Inter', sans-serif;
+    }
+    #spe-ai-btn {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background-color: #003366;
+        color: #ffffff;
+        border: 2px solid #ffffff;
+        box-shadow: 0 4px 15px rgba(0, 51, 102, 0.35);
+        font-size: 22px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+    #spe-ai-btn:hover {
+        background-color: #002244;
+        transform: scale(1.06);
+    }
+    #spe-ai-btn:active {
+        transform: scale(0.95);
+    }
+
+    /* Ventana del chat */
+    #spe-ai-chatbox {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        bottom: 140px;
+        right: 20px;
+        width: 330px;
+        height: 420px;
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        z-index: 1300;
+    }
+    .spe-ai-header {
+        background-color: #003366;
+        color: #ffffff;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .spe-ai-header-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+    .spe-ai-status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #22c55e;
+    }
+    #spe-ai-close {
+        background: none;
+        border: none;
+        color: #ffffff;
+        font-size: 22px;
+        cursor: pointer;
+        line-height: 1;
+    }
+    #spe-ai-messages {
+        flex: 1;
+        padding: 14px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #f8fafc;
+    }
+    .spe-ai-msg {
+        max-width: 82%;
+        padding: 9px 13px;
+        border-radius: 12px;
+        font-size: 0.82rem;
+        line-height: 1.45;
+        word-wrap: break-word;
+    }
+    .spe-ai-bot {
+        align-self: flex-start;
+        background-color: #ffffff;
+        color: #1e293b;
+        border: 1px solid #e2e8f0;
+        border-bottom-left-radius: 2px;
+    }
+    .spe-ai-user {
+        align-self: flex-end;
+        background-color: #003366;
+        color: #ffffff;
+        border-bottom-right-radius: 2px;
+    }
+    #spe-ai-form {
+        display: flex;
+        padding: 8px;
+        background: #ffffff;
+        border-top: 1px solid #e2e8f0;
+        gap: 6px;
+    }
+    #spe-ai-input {
+        flex: 1;
+        padding: 9px 12px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        outline: none;
+    }
+    #spe-ai-input:focus {
+        border-color: #003366;
+    }
+    #spe-ai-submit {
+        background-color: #003366;
+        color: #ffffff;
+        border: none;
+        padding: 0 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+    }
+
+    /* Adaptación para pantallas de celular */
+    @media (max-width: 768px) {
+        #spe-ai-widget {
+            bottom: 70px;
+            right: 15px;
+        }
+        #spe-ai-chatbox {
+            right: 10px;
+            left: 10px;
+            width: auto;
+            bottom: 70px;
+            height: 380px;
+        }
+    }
+</style>
+
+<script>
+    const speBtn = document.getElementById('spe-ai-btn');
+    const speBox = document.getElementById('spe-ai-chatbox');
+    const speClose = document.getElementById('spe-ai-close');
+    const speForm = document.getElementById('spe-ai-form');
+    const speInput = document.getElementById('spe-ai-input');
+    const speMsgs = document.getElementById('spe-ai-messages');
+
+    // Abrir / Cerrar ventana
+    speBtn.addEventListener('click', () => {
+        const estaVisible = speBox.style.display === 'flex';
+        speBox.style.display = estaVisible ? 'none' : 'flex';
+        if (!estaVisible) speInput.focus();
+    });
+
+    speClose.addEventListener('click', () => {
+        speBox.style.display = 'none';
+    });
+
+    // Enviar pregunta
+    speForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const texto = speInput.value.trim();
+        if (!texto) return;
+
+        // 1. Mostrar mensaje del usuario
+        const userBubble = document.createElement('div');
+        userBubble.className = 'spe-ai-msg spe-ai-user';
+        userBubble.textContent = texto;
+        speMsgs.appendChild(userBubble);
+        speInput.value = '';
+        speMsgs.scrollTop = speMsgs.scrollHeight;
+
+        // 2. Mostrar indicador de espera
+        const botBubble = document.createElement('div');
+        botBubble.className = 'spe-ai-msg spe-ai-bot';
+        botBubble.textContent = 'Consultando...';
+        speMsgs.appendChild(botBubble);
+        speMsgs.scrollTop = speMsgs.scrollHeight;
+
+        // 3. Consultar a Flask
+        try {
+            const resp = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensaje: texto })
+            });
+            const data = await resp.json();
+            botBubble.textContent = data.respuesta || 'No pude procesar la respuesta.';
+        } catch (err) {
+            botBubble.textContent = 'Hubo un error de conexión con el servidor.';
+        }
+        speMsgs.scrollTop = speMsgs.scrollHeight;
+    });
+</script>
+
 </body>
 </html>
