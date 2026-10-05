@@ -16,13 +16,18 @@ from google.genai import types
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "spe_unacar_secret_key_2026")
+app.secret_key = os.environ.get("SECRET_KEY", "SPE_UNACAR_SECURE_WEB_KEY_2026")
 
-# 2. Conectar el cliente de Gemini
-api_key = os.environ.get("GEMINI_API_KEY")
-gemini_client = genai.Client(api_key=api_key) if api_key else None
-app = Flask(__name__)
-app.secret_key = "SPE_UNACAR_SECURE_WEB_KEY_2026"
+# Cliente dinámico y seguro de Gemini
+def get_gemini_client():
+    api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    if not api_key:
+        return None
+    try:
+        return genai.Client(api_key=api_key)
+    except Exception as e:
+        print(f"[ERROR INICIALIZANDO CLIENTE GEMINI]: {e}", flush=True)
+        return None
 
 # Rutas de almacenamiento estático y de subidas
 UPLOAD_FOLDER = os.path.join('static', 'fotos')
@@ -117,7 +122,7 @@ def init_db():
         )
     ''')
     
-    # 2. Tabla de Solicitudes de Credencial Web (Reemplazo multiusuario del Excel directo)
+    # 2. Tabla de Solicitudes de Credencial Web
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS solicitudes_credencial (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -228,7 +233,6 @@ def registrar_solicitud_db(datos, nombre_archivo_foto, nombre_archivo_cred):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        # Validación de duplicado por matrícula
         existente = cursor.execute('SELECT id FROM solicitudes_credencial WHERE matricula = ?', (datos["matricula"],)).fetchone()
         if existente:
             conn.close()
@@ -649,7 +653,6 @@ def admin():
     conn.close()
     return render_template('admin.html', socios=socios, locales=locales, especiales_map=especiales_map, condiciones_default=CONDICIONES_DEFAULT)
 
-# Ruta administrativa para descargar la base de datos en formato Excel (.xlsx) en cualquier momento
 @app.route('/admin/exportar_excel')
 def exportar_excel():
     conn = get_db_connection()
@@ -667,7 +670,6 @@ def exportar_excel():
     ]
     ws.append(encabezados)
 
-    # Estilos institucionales para el encabezado
     header_fill = PatternFill(start_color="003366", end_color="003366", fill_type="solid")
     header_font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
     for col_num in range(1, len(encabezados) + 1):
@@ -703,20 +705,23 @@ def exportar_excel():
     )
 
 def obtener_instrucciones_asistente():
-    """Lee tu base de datos y le enseña a la IA la información de los comercios."""
+    """Lee tu base de datos y le enseña a la IA la información de los locales."""
+    lista_comercios = ""
     try:
-        conn = sqlite3.connect('spe_database.db')
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
-        locales = cur.execute("SELECT nombre, categoria, descuento, direccion, horarios, telefono FROM comercios").fetchall()
+        conn = get_db_connection()
+        locales = conn.execute("SELECT nombre, categoria, descuento, direccion, horarios, telefono, descripcion FROM locales").fetchall()
         conn.close()
         
-        lista_comercios = "\n".join([
-            f"- {l['nombre']} ({l['categoria']}): Ofrece {l['descuento']}. Ubicación: {l['direccion']}. Horario: {l['horarios']}. Teléfono/WhatsApp: {l['telefono']}."
-            for l in locales
-        ])
-    except Exception:
-        lista_comercios = "Directorio de comercios afiliados a SPE UNACAR en Ciudad del Carmen."
+        if locales:
+            lineas = []
+            for l in locales:
+                lineas.append(f"- {l['nombre']} ({l['categoria']}): Descuento: {l['descuento']}. Ubicación: {l['direccion']}. Horario: {l['horarios']}. Teléfono/WhatsApp: {l['telefono']}. Detalles: {l['descripcion']}")
+            lista_comercios = "\n".join(lineas)
+        else:
+            lista_comercios = "Actualmente se están actualizando los convenios en el sistema."
+    except Exception as e:
+        print(f"[AVISO ASISTENTE DB]: {e}", flush=True)
+        lista_comercios = "Directorio de convenios afiliados a SPE UNACAR en Ciudad del Carmen."
 
     prompt = f"""
 Eres el Asistente Virtual Oficial de SPE Student Chapter UNACAR (Universidad Autónoma del Carmen) en Ciudad del Carmen.
@@ -725,24 +730,30 @@ Tu labor es responder dudas a los estudiantes sobre convenios, descuentos y la c
 INFORMACIÓN DE LA PLATAFORMA:
 1. Propósito: Brindar descuentos exclusivos a estudiantes universitarios afiliados mediante su credencial física oficial de SPE.
 2. Trámite de membresía (/credencial):
-   - Requisitos: Comprobante de inscripción/reinscripción UNACAR, fotografía infantil/rostro reciente y correo universitario activo (@mail.unacar.mx).
-   - Datos pedidos: Nombre, matrícula, carrera, semestre y número de teléfono.
-3. Uso de beneficios: El estudiante debe presentar su credencial física de SPE antes de pagar o pedir la cuenta en el local participante.
+   - Requisitos: Comprobante de inscripción o reinscripción UNACAR vigente, fotografía de rostro reciente y correo universitario activo (@mail.unacar.mx).
+   - Datos solicitados: Nombre completo, matrícula, carrera, semestre y número de teléfono.
+3. Uso de beneficios: El estudiante debe presentar su credencial física oficial de SPE antes de pagar o pedir la cuenta en el local participante.
 
 COMERCIOS REGISTRADOS ACTUALMENTE:
 {lista_comercios}
 
 REGLAS PARA TUS RESPUESTAS:
-- Sé amable, claro, conciso y con tono universitario respetuoso.
+- Sé amable, claro, conciso y con tono universitario formal pero accesible.
 - Si te preguntan por un negocio en específico, indica su descuento, dirección y horario.
-- Si te piden sugerencias (ejemplo: 'dónde comer' o 'reparar una pantalla'), recomienda los comercios de esa categoría.
-- No inventes descuentos ni negocios que no estén en la lista. Si no tienes un dato, invita amablemente a revisar el Directorio.
+- Si te piden sugerencias (ejemplo: 'dónde reparar una pantalla' o 'servicios de belleza'), recomienda los comercios de esa categoría.
+- No inventes descuentos ni negocios que no existan en la lista.
+- Presenta tus respuestas con viñetas limpias y negritas en los nombres clave para facilitar la lectura.
 """
     return prompt
 
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
     """Ruta que recibe el mensaje del usuario y devuelve la respuesta de la IA."""
+    client = get_gemini_client()
+    if not client:
+        print("[ERROR]: No se detectó GEMINI_API_KEY o GOOGLE_API_KEY.", flush=True)
+        return jsonify({'respuesta': 'El asistente no tiene configurada la clave de acceso a la API.'}), 500
+
     datos = request.get_json() or {}
     mensaje = datos.get('mensaje', '').strip()
 
@@ -751,20 +762,21 @@ def api_chat():
 
     try:
         instrucciones = obtener_instrucciones_asistente()
-        respuesta_ia = gemini_client.models.generate_content(
-            model='gemini-2.5-flash',
+        respuesta_ia = client.models.generate_content(
+            model='gemini-3.8-flash',
             contents=mensaje,
             config=types.GenerateContentConfig(
                 system_instruction=instrucciones,
                 temperature=0.3,
-                max_output_tokens=300
+                max_output_tokens=8000
             )
         )
         return jsonify({'respuesta': respuesta_ia.text})
     except Exception as e:
-        print("--- ERROR REAL DE GEMINI ---")
-        print(e)
-        print("----------------------------")
+        print("--- ERROR REAL DE GEMINI ---", flush=True)
+        print(e, flush=True)
+        print("----------------------------", flush=True)
         return jsonify({'respuesta': 'Disculpa, ocurrió un detalle al conectar con el asistente. Inténtalo nuevamente en un momento.'}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
