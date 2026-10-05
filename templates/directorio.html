@@ -1383,7 +1383,7 @@
         const speInput = document.getElementById('spe-ai-input');
         const speMsgs = document.getElementById('spe-ai-messages');
 
-        // Formateador robusto con corrección de asteriscos incompletos
+        // Formateador robusto con corrección defensiva de asteriscos incompletos
         function formatearTextoIA(texto) {
             if (!texto) return '';
             let html = texto
@@ -1391,7 +1391,7 @@
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;");
 
-            // Si hay un número impar de pares de asteriscos, se cierra
+            // Si hay un número impar de pares de asteriscos, se cierra automáticamente
             let asteriscos = (html.match(/\*\*/g) || []).length;
             if (asteriscos % 2 !== 0) {
                 html += '**';
