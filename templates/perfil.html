@@ -13,7 +13,6 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* 1. FONDO GENERAL NEUTRO SUAVE PARA CONTRASTE Y PROFUNDIDAD */
         body { 
             background-color: #f1f5f9; 
             color: #1a1a1a; 
@@ -22,7 +21,6 @@
             width: 100%; 
         }
 
-        /* CABECERA CON CURSOR ZOOM-IN PARA LIGHTBOX */
         .profile-hero {
             position: relative;
             width: 100%;
@@ -38,7 +36,6 @@
             display: block;
         }
 
-        /* NAVBAR SUPERPUESTA */
         .navbar-overlay {
             position: absolute;
             top: 0;
@@ -53,13 +50,11 @@
             cursor: default;
         }
         
-        /* GRUPO DE LOGOS Y BREADCRUMBS EN ESCRITORIO */
         .header-left-group {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-        /* CONTENEDOR CON FONDO SUTIL Y CENTRADO DE LOGOS */
         .navbar-logos-group {
             display: flex;
             align-items: center;
@@ -133,7 +128,6 @@
         }
         .btn-get-card:hover { background-color: #002244; }
 
-        /* Botón de Menú Hamburguesa Móvil (oculto en desktop) */
         .btn-hamburger {
             display: none;
             background: none;
@@ -152,7 +146,6 @@
             transition: all 0.3s ease;
         }
 
-        /* BREADCRUMBS INTEGRADOS AL LADO DE LOS LOGOS */
         .breadcrumbs-bar {
             display: flex;
             align-items: center;
@@ -187,7 +180,6 @@
             text-overflow: ellipsis;
         }
 
-        /* DEGRADADO OSCURO */
         .profile-hero-overlay {
             position: absolute;
             bottom: 0;
@@ -200,7 +192,6 @@
             z-index: 5;
         }
 
-        /* TARJETA FLOTANTE DE MARCA */
         .hero-brand-card {
             background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(10px);
@@ -217,7 +208,6 @@
             cursor: default;
         }
 
-        /* LOGO FLOTANTE COMO CÍRCULO COMPLETO CON RELIEVE Y BORDE GRUESO */
         .profile-avatar {
             width: 110px;
             height: 110px;
@@ -364,7 +354,6 @@
             width: 100%;
         }
 
-        /* ACCIONES EXTRA */
         .extra-actions-bar {
             display: flex;
             gap: 12px;
@@ -435,7 +424,6 @@
             transform: translateY(-2px);
         }
 
-        /* 1. TARJETA DEL DESCUENTO ESTILO CUPÓN EN BLANCO PURO CON BORDE */
         .coupon-banner {
             position: relative;
             background: #ffffff;
@@ -506,7 +494,6 @@
         }
         .btn-use-discount:hover { background-color: #001f3f; transform: translateY(-2px); }
 
-        /* GRID Y STICKY SIDEBAR */
         .profile-grid {
             display: grid;
             grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
@@ -527,7 +514,6 @@
             top: 25px;
         }
 
-        /* 1. TARJETAS DE CONTENIDO EN BLANCO PURO CON BORDE SUTIL */
         .content-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -550,7 +536,6 @@
             margin-bottom: 15px;
         }
 
-        /* TEXTO COLAPSABLE "LEER MÁS" EN SOBRE NOSOTROS */
         .collapsible-text-wrapper {
             position: relative;
             max-height: 95px;
@@ -598,7 +583,6 @@
             text-decoration: underline;
         }
 
-        /* ESPECIALES CON SCROLL HORIZONTAL AISLADO */
         .specials-card {
             overflow: hidden;
         }
@@ -696,7 +680,6 @@
             align-self: flex-start;
         }
 
-        /* HORARIOS */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -747,7 +730,6 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* GALERÍA */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -774,7 +756,6 @@
             transform: scale(1.06);
         }
 
-        /* CONTACTO Y REDES */
         .btn-whatsapp {
             display: flex;
             align-items: center;
@@ -876,7 +857,6 @@
             word-break: break-word;
         }
 
-        /* 1. LOCALES SIMILARES EN BLANCO PURO CON BORDE SUTIL */
         .similar-section {
             margin-top: 40px;
             padding-top: 30px;
@@ -951,7 +931,6 @@
             margin-top: 15px;
         }
 
-        /* MODALES */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -1004,7 +983,6 @@
             color: #003366;
         }
 
-        /* MODAL DEL ESPECIAL */
         .special-modal-box {
             max-width: 560px;
             max-height: 85vh;
@@ -1085,7 +1063,6 @@
             background-color: #20ba5a;
         }
 
-        /* BARRA FIJA EN MÓVILES */
         .mobile-sticky-bar {
             display: none;
             position: fixed;
@@ -1150,7 +1127,6 @@
             box-shadow: 2px 2px 0px #000000;
         }
 
-        /* LIGHTBOX MODAL */
         .lightbox-modal {
             display: none;
             position: fixed;
@@ -1180,11 +1156,7 @@
             font-family: 'Space Mono', monospace;
         }
 
-        /* ========================================================
-           OPTIMIZACIONES EXCLUSIVAS PARA MÓVIL (MAX-WIDTH: 768PX)
-           ======================================================== */
         @media (max-width: 768px) {
-            /* 1. NAVBAR MÓVIL: AMBOS LOGOTIPOS Y MENÚ HAMBURGUESA */
             .navbar-overlay {
                 padding: 10px 1rem;
             }
@@ -1247,7 +1219,6 @@
                 text-align: center;
             }
 
-            /* 2. OCULTAR ELEMENTOS REDUNDANTES EN MÓVIL */
             .breadcrumbs-bar {
                 display: none !important;
             }
@@ -1261,7 +1232,6 @@
                 display: none !important;
             }
 
-            /* 3. MEDIDA EXACTA DE LA PORTADA CON ALTA RESOLUCIÓN */
             .profile-hero {
                 height: 210px !important;
                 min-height: 210px !important;
@@ -1276,7 +1246,6 @@
                 image-rendering: -webkit-optimize-contrast;
             }
 
-            /* 4. TARJETA SOBREPUESTA A LA MITAD (50% OVERLAP) */
             .profile-hero-overlay {
                 position: absolute;
                 bottom: 0;
@@ -1320,7 +1289,6 @@
                 opacity: 0.6;
             }
 
-            /* 5. CONTENEDOR LINEAL EN 1 SOLA COLUMNA CON px-4 */
             .container { 
                 margin-top: 15px;
                 padding: 0 1rem 110px 1rem;
@@ -1343,7 +1311,6 @@
                 padding: 0 !important;
             }
 
-            /* 6. BLOQUE DE CONVERSIÓN INMEDIATO (MENÚ PDF + CUPÓN) */
             .extra-actions-bar {
                 margin-bottom: 14px;
                 gap: 8px;
@@ -1366,7 +1333,6 @@
                 font-size: 0.8rem;
             }
 
-            /* 7. TARJETAS MODULARES LIMPIAS (rounded-2xl) */
             .content-card {
                 border-radius: 20px;
                 padding: 18px 14px;
@@ -1378,7 +1344,6 @@
                 margin-bottom: 12px;
             }
 
-            /* 8. CARRUSEL HORIZONTAL TÁCTIL EN GALERÍA */
             .gallery-grid {
                 display: flex !important;
                 flex-wrap: nowrap !important;
@@ -1397,7 +1362,6 @@
                 border-radius: 12px;
             }
 
-            /* 9. BARRA FIJA INFERIOR */
             .mobile-sticky-bar { 
                 display: flex; 
                 height: 62px;
@@ -1407,7 +1371,6 @@
                 font-size: 1.45rem;
             }
 
-            /* RESPUESTA TÁCTIL */
             .btn-use-discount:active,
             .btn-mobile-discount:active,
             .btn-whatsapp:active,
@@ -1433,12 +1396,10 @@
 </head>
 <body>
 
-    <!-- HERO BANNER CON APERTURA EN LIGHTBOX EN ZONAS LIBRES -->
     {% set portada_src = url_for('static', filename='fotos/' + local['foto_portada']) if local['foto_portada'] else (url_for('static', filename='fotos/' + local['foto']) if local['foto'] else '') %}
 
     <div class="profile-hero" {% if portada_src %}onclick="openLightbox('{{ portada_src }}')"{% endif %} title="Toca para ampliar imagen de portada">
         
-        <!-- NAVBAR SUPERIOR CON LOGOS DUALES EN CÁPSULA Y BREADCRUMBS -->
         <nav class="navbar-overlay" onclick="event.stopPropagation()">
             <div class="header-left-group">
                 <div class="navbar-logos-group">
@@ -1450,7 +1411,6 @@
                     </a>
                 </div>
 
-                <!-- BREADCRUMBS ALINEADOS AL LADO DE LOS LOGOS EN ESCRITORIO -->
                 <div class="breadcrumbs-bar">
                     <a href="/">Inicio</a>
                     <span class="breadcrumbs-separator">/</span>
@@ -1464,14 +1424,12 @@
                 </div>
             </div>
 
-            <!-- Botón Hamburguesa Móvil (☰) -->
             <button class="btn-hamburger" id="nav-toggle-btn" aria-label="Abrir menú de navegación">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
 
-            <!-- Menú de Enlaces con Accesos Oficiales UNACAR y SPE -->
             <div class="nav-menu" id="nav-menu-panel">
                 <a href="/" class="nav-link">Inicio</a>
                 <a href="/directorio" class="nav-link">Directorio</a>
@@ -1489,11 +1447,9 @@
         <div style="width:100%; height:100%; background:#002244;"></div>
         {% endif %}
         
-        <!-- DEGRADADO Y BLOQUE TRASLÚCIDO DE MARCA (SOBREPUESTO A LA MITAD EN MÓVIL) -->
         <div class="profile-hero-overlay" onclick="event.stopPropagation()">
             <div class="hero-brand-card">
                 
-                <!-- FOTO DE PERFIL COMO CÍRCULO COMPLETO CON RELIEVE -->
                 {% set avatar_src = url_for('static', filename='fotos/' + local['foto_perfil']) if local['foto_perfil'] else (url_for('static', filename='fotos/' + local['foto']) if local['foto'] else '') %}
                 
                 <div class="profile-avatar" {% if avatar_src %}onclick="openLightbox('{{ avatar_src }}')"{% endif %} title="Toca para ampliar logo">
@@ -1513,13 +1469,11 @@
                             <span class="badge-pill">{{ local['categoria'] }}</span>
                             {% endif %}
                             
-                            <!-- BADGE DE PRECIO OCULTO EN MÓVIL -->
                             {% if local['rango_precio'] %}
                             <span class="badge-pill badge-price-mobile-hide">{{ local['rango_precio'] }}</span>
                             {% endif %}
                         </div>
 
-                        <!-- BOTÓN COMPARTIR (VISIBLE EN PC, OCULTO EN MÓVIL) -->
                         <button type="button" class="btn-share" onclick="compartirLocal()">
                             🔗 Compartir
                             <span class="share-tooltip" id="share-tooltip">¡Enlace copiado!</span>
@@ -1528,11 +1482,9 @@
 
                     <h1 class="profile-title">{{ local['nombre'] }}</h1>
                     
-                    <!-- DIRECCIÓN TÁCTIL (EN MÓVIL COPIA DIRECTAMENTE AL TOCAR EL TEXTO) -->
                     {% if local['direccion'] %}
                     <div class="profile-address-box">
                         <span class="profile-address touch-copy-address" onclick="copiarDireccionDirecta(this, '{{ local['direccion'] }}')" title="Toca para copiar dirección">📍 {{ local['direccion'] }}</span>
-                        <!-- BOTÓN COPIAR CLÁSICO (VISIBLE EN PC, OCULTO EN MÓVIL) -->
                         <button type="button" class="btn-copy-address" id="btn-copy-hero" onclick="copiarTexto('{{ local['direccion'] }}', 'btn-copy-hero')" title="Copiar dirección">
                             📋 Copiar
                         </button>
@@ -1545,7 +1497,6 @@
 
     <div class="container">
 
-        <!-- 1. BLOQUE DE CONVERSIÓN INMEDIATO: MENÚ PDF / AGENDAR CITA -->
         {% if local['archivo_menu'] or local['enlace_citas'] %}
         <div class="extra-actions-bar">
             {% if local['archivo_menu'] %}
@@ -1569,7 +1520,6 @@
         </div>
         {% endif %}
 
-        <!-- 2. TARJETA DESTACADA DEL DESCUENTO ESTILO CUPÓN / VOUCHER -->
         {% if local['descuento'] %}
         <div class="coupon-banner">
             <div class="coupon-left">
@@ -1586,13 +1536,9 @@
         </div>
         {% endif %}
 
-        <!-- 3. ESTRUCTURA EN TARJETAS MODULARES EN ORDEN ESTRICTO DE ESCRITORIO -->
         <div class="profile-grid">
-            
-            <!-- COLUMNA IZQUIERDA -->
             <div class="main-column">
                 
-                <!-- 1️⃣ ESPECIALES PARA ESTUDIANTES -->
                 {% if especiales and especiales|length > 0 %}
                 <div class="content-card specials-card">
                     <h3>{{ local['titulo_especiales'] if local['titulo_especiales'] else 'Especiales para Estudiantes' }}</h3>
@@ -1629,7 +1575,6 @@
                 </div>
                 {% endif %}
 
-                <!-- 2️⃣ SOBRE NOSOTROS -->
                 <div class="content-card">
                     <h3>Sobre nosotros</h3>
                     <div class="collapsible-text-wrapper" id="about-text-wrapper">
@@ -1647,7 +1592,6 @@
                     {% endif %}
                 </div>
 
-                <!-- 3️⃣ GALERÍA DE FOTOS (CARRUSEL TÁCTIL) -->
                 {% if fotos_galeria and fotos_galeria|length > 0 %}
                 <div class="content-card">
                     <h3>Galería de fotos</h3>
@@ -1663,10 +1607,7 @@
 
             </div>
 
-            <!-- COLUMNA DERECHA -->
             <div class="sidebar-column">
-                
-                <!-- 4️⃣ CONTACTO -->
                 <div class="content-card">
                     <h3>Contacto</h3>
                     
@@ -1702,7 +1643,6 @@
                     </div>
                 </div>
 
-                <!-- 5️⃣ HORARIOS Y ESTATUS -->
                 {% if local['horarios'] %}
                 <div class="content-card">
                     <h3>Horarios</h3>
@@ -1713,7 +1653,6 @@
                 </div>
                 {% endif %}
 
-                <!-- 6️⃣ UBICACIÓN Y MAPA -->
                 <div class="content-card">
                     <h3>📍 Ubicación</h3>
                     {% if local['direccion'] %}
@@ -1742,7 +1681,6 @@
                     {% endif %}
                 </div>
 
-                <!-- 7️⃣ CONDICIONES DEL BENEFICIO -->
                 <div class="content-card">
                     <h3>Condiciones</h3>
                     <ul class="conditions-list">
@@ -1756,7 +1694,6 @@
 
         </div>
 
-        <!-- SECCIÓN LOCALES SIMILARES -->
         {% if locales_similares and locales_similares|length > 0 %}
         <section class="similar-section">
             <h3 class="similar-title">Locales Similares en {{ local['categoria'] }}</h3>
@@ -1800,7 +1737,7 @@
             </button>
             {% if local['telefono'] %}
             <a href="{{ wpp_url }}" target="_blank" class="btn-mobile-wpp" title="WhatsApp">
-                <svg class="social-icon-svg" style="fill:#ffffff; width:18px; height:18px;" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.935 2.796.935 3.183 0 5.769-2.587 5.77-5.766.001-3.187-2.575-5.77-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.072-2.029-.479-.988-.41-1.637-.996-2.096-1.58-.62-.789-1.004-1.748-1.004-2.736 0-1.144.593-1.708.804-1.939.21-.23.458-.288.612-.288.153 0 .306.002.436.012.137.01.32-.052.5.383.188.452.641 1.564.697 1.679.057.115.096.25.019.403-.076.153-.115.249-.23.383-.114.135-.24.3-.343.403-.115.115-.235.24-.101.47.134.23.596.983 1.28 1.592.88.784 1.623 1.026 1.853 1.14.23.115.364.096.5-.058.134-.153.575-.67.728-.9.153-.23.307-.192.518-.115.21.077 1.34.632 1.57.747.23.115.383.172.44.269.058.096.058.556-.086.961zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.436 5.176L2 22l4.954-1.399C8.423 21.492 10.148 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                <svg class="social-icon-svg" style="fill:#ffffff; width:18px; height:18px;" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.935 2.796.935 3.183 0 5.769-2.587 5.77-5.766.001-3.187-2.575-5.77-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.072-2.029-.479-.988-.41-1.637-.996-2.096-1.58-.62-.789-1.004-1.748-1.004-2.736 0-1.144.593-1.708.804-1.939.21-.23.458-.288.612-.288.153 0 .306.002.436.012.137.01.32-.052.5.383.188.452.641 1.564.697 1.679.057.115.096.25.019.403-.076.153-.115.249-.23.383-.114.135-.24.3-.343.403-.115.115-.235.24-.101.47.134.23.596.983 1.28 1.592.88.784 1.623 1.026 1.853 1.14.23.115.383.172.44.269.058.096.058.556-.086.961zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.436 5.176L2 22l4.954-1.399C8.423 21.492 10.148 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
             </a>
             {% endif %}
         </div>
@@ -1849,8 +1786,197 @@
         <img class="lightbox-content" id="lightbox-img" alt="Ampliación">
     </div>
 
+    <!-- ==========================================
+         BOTÓN Y VENTANA FLOTANTE DEL ASISTENTE IA (SPE UNACAR)
+         ========================================== -->
+    <div id="spe-ai-widget">
+        <button id="spe-ai-btn" title="Asistente Virtual SPE UNACAR" aria-label="Abrir asistente">
+            💬
+        </button>
+
+        <div id="spe-ai-chatbox">
+            <div class="spe-ai-header">
+                <div class="spe-ai-header-info">
+                    <span class="spe-ai-status-dot"></span>
+                    <span>Asistente SPE UNACAR</span>
+                </div>
+                <button id="spe-ai-close" title="Cerrar chat">&times;</button>
+            </div>
+
+            <div id="spe-ai-messages">
+                <div class="spe-ai-msg spe-ai-bot">
+                    ¡Hola! Soy el asistente de <strong>SPE UNACAR</strong>. ¿Tienes alguna duda sobre los descuentos de <strong>{{ local['nombre'] }}</strong> o de cualquier otro comercio afiliado?
+                </div>
+            </div>
+
+            <form id="spe-ai-form">
+                <input type="text" id="spe-ai-input" placeholder="Pregunta sobre {{ local['nombre'] }}, trámites..." autocomplete="off" required>
+                <button type="submit" id="spe-ai-submit">➤</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        #spe-ai-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 25px;
+            z-index: 1200;
+            font-family: 'Inter', sans-serif;
+        }
+        #spe-ai-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background-color: #003366;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.35);
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        #spe-ai-btn:hover {
+            background-color: #002244;
+            transform: scale(1.06);
+        }
+        #spe-ai-btn:active {
+            transform: scale(0.95);
+        }
+
+        #spe-ai-chatbox {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            bottom: 95px;
+            right: 25px;
+            width: 340px;
+            height: 440px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 1300;
+        }
+        .spe-ai-header {
+            background-color: #003366;
+            color: #ffffff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .spe-ai-header-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .spe-ai-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #22c55e;
+        }
+        #spe-ai-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 22px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        #spe-ai-messages {
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: #f8fafc;
+        }
+        .spe-ai-msg {
+            max-width: 86%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+        .spe-ai-bot {
+            align-self: flex-start;
+            background-color: #ffffff;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 2px;
+        }
+        .spe-ai-bot strong {
+            color: #003366;
+            font-weight: 700;
+        }
+        .spe-ai-bot ul, .spe-ai-bot ol {
+            margin: 6px 0 6px 16px;
+            padding: 0;
+        }
+        .spe-ai-bot li {
+            margin-bottom: 4px;
+        }
+        .spe-ai-user {
+            align-self: flex-end;
+            background-color: #003366;
+            color: #ffffff;
+            border-bottom-right-radius: 2px;
+        }
+        #spe-ai-form {
+            display: flex;
+            padding: 8px;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            gap: 6px;
+        }
+        #spe-ai-input {
+            flex: 1;
+            padding: 9px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            outline: none;
+        }
+        #spe-ai-input:focus {
+            border-color: #003366;
+        }
+        #spe-ai-submit {
+            background-color: #003366;
+            color: #ffffff;
+            border: none;
+            padding: 0 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            #spe-ai-widget {
+                bottom: 78px;
+                right: 15px;
+            }
+            #spe-ai-chatbox {
+                right: 10px;
+                left: 10px;
+                width: auto;
+                bottom: 78px;
+                height: 380px;
+            }
+        }
+    </style>
+
     <script>
-        // Control del Menú Hamburguesa Móvil
         const navToggleBtn = document.getElementById('nav-toggle-btn');
         const navMenuPanel = document.getElementById('nav-menu-panel');
 
@@ -1865,7 +1991,6 @@
             });
         }
 
-        // Modal de Descuento
         function abrirModalDescuento() {
             document.getElementById('modal-descuento').style.display = 'flex';
         }
@@ -1873,7 +1998,6 @@
             document.getElementById('modal-descuento').style.display = 'none';
         }
 
-        // Modal de Especial
         const localTelefono = `{{ local['telefono'] or '' }}`;
         function abrirModalEspecial(cardElement) {
             const titulo = cardElement.getAttribute('data-titulo') || '';
@@ -1924,7 +2048,6 @@
             document.getElementById('modal-especial').style.display = 'none';
         }
 
-        // Botón Compartir
         function compartirLocal() {
             const shareData = {
                 title: "{{ local['nombre'] }} - Beneficio SPE",
@@ -1945,7 +2068,6 @@
             }
         }
 
-        // Copiar dirección al tocar el texto directamente
         function copiarDireccionDirecta(elemento, texto) {
             navigator.clipboard.writeText(texto).then(() => {
                 const original = elemento.innerHTML;
@@ -1956,7 +2078,6 @@
             });
         }
 
-        // Copiar dirección con botón clásico (PC)
         function copiarTexto(texto, btnId) {
             navigator.clipboard.writeText(texto).then(() => {
                 const btn = document.getElementById(btnId);
@@ -1968,7 +2089,6 @@
             });
         }
 
-        // Descargar vCard (.vcf)
         function descargarVCard(nombre, telefono) {
             const vcardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${nombre}\nORG:${nombre}\nTEL;TYPE=CELL,VOICE:${telefono}\nNOTE:Convenio UniDescuentos SPE\nEND:VCARD`;
             const blob = new Blob([vcardContent], { type: 'text/vcard;charset=utf-8;' });
@@ -1982,7 +2102,6 @@
             URL.revokeObjectURL(url);
         }
 
-        // Lightbox
         function openLightbox(src) {
             if (!src) return;
             document.getElementById('lightbox-img').src = src;
@@ -1992,7 +2111,6 @@
             document.getElementById('lightbox').style.display = 'none';
         }
 
-        // Leer más / Leer menos
         function toggleReadMore() {
             const wrapper = document.getElementById('about-text-wrapper');
             const btn = document.getElementById('btn-readmore');
@@ -2006,7 +2124,6 @@
             }
         }
 
-        // Lógica de horario militar y días de descanso
         document.addEventListener('DOMContentLoaded', () => {
             const p = document.getElementById('about-text-p');
             const btnReadMore = document.getElementById('btn-readmore');
@@ -2082,6 +2199,106 @@
                 textSpan.textContent = 'Cerrado en este momento';
             }
         });
+
+        // LÓGICA DEL ASISTENTE VIRTUAL SPE UNACAR CON REPARACIÓN DE ASTERISCOS
+        const speBtn = document.getElementById('spe-ai-btn');
+        const speBox = document.getElementById('spe-ai-chatbox');
+        const speClose = document.getElementById('spe-ai-close');
+        const speForm = document.getElementById('spe-ai-form');
+        const speInput = document.getElementById('spe-ai-input');
+        const speMsgs = document.getElementById('spe-ai-messages');
+
+        function formatearTextoIA(texto) {
+            if (!texto) return '';
+            let html = texto
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+
+            let asteriscos = (html.match(/\*\*/g) || []).length;
+            if (asteriscos % 2 !== 0) {
+                html += '**';
+            }
+
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            let lineas = html.split('\n');
+            let resultado = [];
+            let enLista = false;
+
+            lineas.forEach(linea => {
+                let limpia = linea.trim();
+                let matchLista = limpia.match(/^(\*|-|\d+\.)\s+(.+)/);
+
+                if (matchLista) {
+                    if (!enLista) {
+                        resultado.push('<ul>');
+                        enLista = true;
+                    }
+                    resultado.push(`<li>${matchLista[2]}</li>`);
+                } else {
+                    if (enLista) {
+                        resultado.push('</ul>');
+                        enLista = false;
+                    }
+                    if (limpia.length > 0) {
+                        resultado.push(`<p style="margin-bottom: 6px;">${limpia}</p>`);
+                    }
+                }
+            });
+
+            if (enLista) {
+                resultado.push('</ul>');
+            }
+
+            return resultado.join('');
+        }
+
+        if (speBtn && speBox && speClose) {
+            speBtn.addEventListener('click', () => {
+                const estaVisible = speBox.style.display === 'flex';
+                speBox.style.display = estaVisible ? 'none' : 'flex';
+                if (!estaVisible && speInput) speInput.focus();
+            });
+
+            speClose.addEventListener('click', () => {
+                speBox.style.display = 'none';
+            });
+        }
+
+        if (speForm && speInput && speMsgs) {
+            speForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const texto = speInput.value.trim();
+                if (!texto) return;
+
+                const userBubble = document.createElement('div');
+                userBubble.className = 'spe-ai-msg spe-ai-user';
+                userBubble.textContent = texto;
+                speMsgs.appendChild(userBubble);
+                speInput.value = '';
+                speMsgs.scrollTop = speMsgs.scrollHeight;
+
+                const botBubble = document.createElement('div');
+                botBubble.className = 'spe-ai-msg spe-ai-bot';
+                botBubble.textContent = 'Consultando...';
+                speMsgs.appendChild(botBubble);
+                speMsgs.scrollTop = speMsgs.scrollHeight;
+
+                try {
+                    const resp = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ mensaje: texto })
+                    });
+                    const data = await resp.json();
+                    botBubble.innerHTML = formatearTextoIA(data.respuesta || 'No pude procesar la respuesta.');
+                } catch (err) {
+                    botBubble.textContent = 'Hubo un error de conexión con el servidor.';
+                }
+                speMsgs.scrollTop = speMsgs.scrollHeight;
+            });
+        }
     </script>
 
 </body>
