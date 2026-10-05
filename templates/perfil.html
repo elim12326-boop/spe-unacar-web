@@ -21,6 +21,7 @@
             width: 100%; 
         }
 
+        /* CABECERA CON CURSOR ZOOM-IN PARA LIGHTBOX */
         .profile-hero {
             position: relative;
             width: 100%;
@@ -36,6 +37,7 @@
             display: block;
         }
 
+        /* NAVBAR SUPERPUESTA */
         .navbar-overlay {
             position: absolute;
             top: 0;
@@ -50,6 +52,7 @@
             cursor: default;
         }
         
+        /* GRUPO DE LOGOS Y BREADCRUMBS EN ESCRITORIO */
         .header-left-group {
             display: flex;
             align-items: center;
@@ -1613,7 +1616,7 @@
                     
                     {% if local['telefono'] %}
                     <a href="{{ wpp_url }}" target="_blank" class="btn-whatsapp">
-                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.935 2.796.935 3.183 0 5.769-2.587 5.77-5.766.001-3.187-2.575-5.77-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.072-2.029-.479-.988-.41-1.637-.996-2.096-1.58-.62-.789-1.004-1.748-1.004-2.736 0-1.144.593-1.708.804-1.939.21-.23.458-.288.612-.288.153 0 .306.002.436.012.137.01.32-.052.5.383.188.452.641 1.564.697 1.679.057.115.096.25.019.403-.076.153-.115.249-.23.383-.114.135-.24.3-.343.403-.115.115-.235.24-.101.47.134.23.596.983 1.28 1.592.88.784 1.623 1.026 1.853 1.14.23.115.364.096.5-.058.134-.153.575-.67.728-.9.153-.23.307-.192.518-.115.21.077 1.34.632 1.57.747.23.115.383.172.44.269.058.096.058.556-.086.961zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.436 5.176L2 22l4.954-1.399C8.423 21.492 10.148 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.935 2.796.935 3.183 0 5.769-2.587 5.77-5.766.001-3.187-2.575-5.77-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.072-2.029-.479-.988-.41-1.637-.996-2.096-1.58-.62-.789-1.004-1.748-1.004-2.736 0-1.144.593-1.708.804-1.939.21-.23.458-.288.612-.288.153 0 .306.002.436.012.137.01.32-.052.5.383.188.452.641 1.564.697 1.679.057.115.096.25.019.403-.076.153-.115.249-.23.383-.114.135-.24.3-.343.403-.115.115-.235.24-.101.47.134.23.596.983 1.28 1.592.88.784 1.623 1.026 1.853 1.14.23.115.383.172.44.269.058.096.058.556-.086.961zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.436 5.176L2 22l4.954-1.399C8.423 21.492 10.148 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
                         WhatsApp
                     </a>
 
@@ -1790,10 +1793,12 @@
          BOTÓN Y VENTANA FLOTANTE DEL ASISTENTE IA (SPE UNACAR)
          ========================================== -->
     <div id="spe-ai-widget">
+        <!-- Botón redondo flotante -->
         <button id="spe-ai-btn" title="Asistente Virtual SPE UNACAR" aria-label="Abrir asistente">
             💬
         </button>
 
+        <!-- Ventana de conversación -->
         <div id="spe-ai-chatbox">
             <div class="spe-ai-header">
                 <div class="spe-ai-header-info">
@@ -1817,6 +1822,7 @@
     </div>
 
     <style>
+        /* Estilos del widget flotante */
         #spe-ai-widget {
             position: fixed;
             bottom: 30px;
@@ -1847,6 +1853,7 @@
             transform: scale(0.95);
         }
 
+        /* Ventana del chat */
         #spe-ai-chatbox {
             display: none;
             flex-direction: column;
@@ -1961,6 +1968,7 @@
             font-weight: 700;
         }
 
+        /* Adaptación para pantallas de celular respetando la barra fija inferior */
         @media (max-width: 768px) {
             #spe-ai-widget {
                 bottom: 78px;
@@ -1977,6 +1985,7 @@
     </style>
 
     <script>
+        // Control del Menú Hamburguesa Móvil
         const navToggleBtn = document.getElementById('nav-toggle-btn');
         const navMenuPanel = document.getElementById('nav-menu-panel');
 
@@ -1991,6 +2000,7 @@
             });
         }
 
+        // Modal de Descuento
         function abrirModalDescuento() {
             document.getElementById('modal-descuento').style.display = 'flex';
         }
@@ -1998,6 +2008,7 @@
             document.getElementById('modal-descuento').style.display = 'none';
         }
 
+        // Modal de Especial
         const localTelefono = `{{ local['telefono'] or '' }}`;
         function abrirModalEspecial(cardElement) {
             const titulo = cardElement.getAttribute('data-titulo') || '';
@@ -2048,6 +2059,7 @@
             document.getElementById('modal-especial').style.display = 'none';
         }
 
+        // Botón Compartir
         function compartirLocal() {
             const shareData = {
                 title: "{{ local['nombre'] }} - Beneficio SPE",
@@ -2068,6 +2080,7 @@
             }
         }
 
+        // Copiar dirección al tocar el texto directamente
         function copiarDireccionDirecta(elemento, texto) {
             navigator.clipboard.writeText(texto).then(() => {
                 const original = elemento.innerHTML;
@@ -2078,6 +2091,7 @@
             });
         }
 
+        // Copiar dirección con botón clásico (PC)
         function copiarTexto(texto, btnId) {
             navigator.clipboard.writeText(texto).then(() => {
                 const btn = document.getElementById(btnId);
@@ -2089,6 +2103,7 @@
             });
         }
 
+        // Descargar vCard (.vcf)
         function descargarVCard(nombre, telefono) {
             const vcardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${nombre}\nORG:${nombre}\nTEL;TYPE=CELL,VOICE:${telefono}\nNOTE:Convenio UniDescuentos SPE\nEND:VCARD`;
             const blob = new Blob([vcardContent], { type: 'text/vcard;charset=utf-8;' });
@@ -2102,6 +2117,7 @@
             URL.revokeObjectURL(url);
         }
 
+        // Lightbox
         function openLightbox(src) {
             if (!src) return;
             document.getElementById('lightbox-img').src = src;
@@ -2111,6 +2127,7 @@
             document.getElementById('lightbox').style.display = 'none';
         }
 
+        // Leer más / Leer menos
         function toggleReadMore() {
             const wrapper = document.getElementById('about-text-wrapper');
             const btn = document.getElementById('btn-readmore');
@@ -2124,6 +2141,7 @@
             }
         }
 
+        // Lógica de horario militar y días de descanso
         document.addEventListener('DOMContentLoaded', () => {
             const p = document.getElementById('about-text-p');
             const btnReadMore = document.getElementById('btn-readmore');
@@ -2200,7 +2218,9 @@
             }
         });
 
-        // LÓGICA DEL ASISTENTE VIRTUAL SPE UNACAR CON REPARACIÓN DE ASTERISCOS
+        // ==========================================
+        // LÓGICA DEL ASISTENTE VIRTUAL SPE UNACAR
+        // ==========================================
         const speBtn = document.getElementById('spe-ai-btn');
         const speBox = document.getElementById('spe-ai-chatbox');
         const speClose = document.getElementById('spe-ai-close');
@@ -2208,6 +2228,7 @@
         const speInput = document.getElementById('spe-ai-input');
         const speMsgs = document.getElementById('spe-ai-messages');
 
+        // Formateador robusto con corrección defensiva de asteriscos incompletos
         function formatearTextoIA(texto) {
             if (!texto) return '';
             let html = texto
@@ -2215,13 +2236,16 @@
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;");
 
+            // Si hay un número impar de pares de asteriscos, se cierra automáticamente
             let asteriscos = (html.match(/\*\*/g) || []).length;
             if (asteriscos % 2 !== 0) {
                 html += '**';
             }
 
+            // Convertir negritas (**texto**)
             html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
+            // Separar por saltos de línea para estructurar listas
             let lineas = html.split('\n');
             let resultado = [];
             let enLista = false;
@@ -2254,6 +2278,7 @@
             return resultado.join('');
         }
 
+        // Abrir / Cerrar ventana
         if (speBtn && speBox && speClose) {
             speBtn.addEventListener('click', () => {
                 const estaVisible = speBox.style.display === 'flex';
@@ -2266,12 +2291,14 @@
             });
         }
 
+        // Enviar pregunta
         if (speForm && speInput && speMsgs) {
             speForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const texto = speInput.value.trim();
                 if (!texto) return;
 
+                // 1. Mostrar mensaje del usuario
                 const userBubble = document.createElement('div');
                 userBubble.className = 'spe-ai-msg spe-ai-user';
                 userBubble.textContent = texto;
@@ -2279,12 +2306,14 @@
                 speInput.value = '';
                 speMsgs.scrollTop = speMsgs.scrollHeight;
 
+                // 2. Mostrar indicador de espera
                 const botBubble = document.createElement('div');
                 botBubble.className = 'spe-ai-msg spe-ai-bot';
                 botBubble.textContent = 'Consultando...';
                 speMsgs.appendChild(botBubble);
                 speMsgs.scrollTop = speMsgs.scrollHeight;
 
+                // 3. Consultar a Flask
                 try {
                     const resp = await fetch('/api/chat', {
                         method: 'POST',
