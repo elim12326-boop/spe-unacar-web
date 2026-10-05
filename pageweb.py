@@ -1,5 +1,6 @@
 import os
 import re
+import time
 import urllib.parse
 import sqlite3
 from io import BytesIO
@@ -102,7 +103,7 @@ CONDICIONES_DEFAULT = """✔ Válido al presentar tu membresía física de SPE v
 ✔ No acumulable con otras promociones o descuentos vigentes."""
 
 def get_db_connection():
-    conn = sqlite3.connect(DB_NAME)
+    conn = sqlite3.connect(DB_NAME, timeout=20.0)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -704,8 +705,15 @@ def exportar_excel():
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
+# Caché en memoria para soportar alto tráfico sin saturar la base de datos
+_CACHE_INSTRUCCIONES = {"texto": None, "timestamp": 0}
+
 def obtener_instrucciones_asistente():
-    """Lee tu base de datos y le enseña a la IA la información de los locales."""
+    """Lee la base de datos con caché de 300s para rendimiento masivo y aprendizaje autónomo."""
+    ahora = time.time()
+    if _CACHE_INSTRUCCIONES["texto"] and (ahora - _CACHE_INSTRUCCIONES["timestamp"] < 300):
+        return _CACHE_INSTRUCCIONES["texto"]
+
     lista_comercios = ""
     try:
         conn = get_db_connection()
@@ -744,11 +752,13 @@ REGLAS PARA TUS RESPUESTAS:
 - No inventes descuentos ni negocios que no existan en la lista.
 - Presenta tus respuestas con viñetas limpias y negritas en los nombres clave para facilitar la lectura.
 """
+    _CACHE_INSTRUCCIONES["texto"] = prompt
+    _CACHE_INSTRUCCIONES["timestamp"] = ahora
     return prompt
 
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
-    """Ruta que recibe el mensaje del usuario y devuelve la respuesta de la IA."""
+    """Ruta con lógica de reintento para alta concurrencia y tráfico masivo."""
     client = get_gemini_client()
     if not client:
         print("[ERROR]: No se detectó GEMINI_API_KEY o GOOGLE_API_KEY.", flush=True)
@@ -760,23 +770,30 @@ def api_chat():
     if not mensaje:
         return jsonify({'error': 'El mensaje está vacío'}), 400
 
-    try:
-        instrucciones = obtener_instrucciones_asistente()
-        respuesta_ia = client.models.generate_content(
-            model='gemini-3.8-flash',
-            contents=mensaje,
-            config=types.GenerateContentConfig(
-                system_instruction=instrucciones,
-                temperature=0.3,
-                max_output_tokens=8000
+    instrucciones = obtener_instrucciones_asistente()
+    
+    # Manejo de reintentos (Exponential Backoff) para evitar caídas por saturación
+    max_reintentos = 2
+    for intento in range(max_reintentos + 1):
+        try:
+            respuesta_ia = client.models.generate_content(
+                model='gemini-3.8-flash',
+                contents=mensaje,
+                config=types.GenerateContentConfig(
+                    system_instruction=instrucciones,
+                    temperature=0.3,
+                    max_output_tokens=800
+                )
             )
-        )
-        return jsonify({'respuesta': respuesta_ia.text})
-    except Exception as e:
-        print("--- ERROR REAL DE GEMINI ---", flush=True)
-        print(e, flush=True)
-        print("----------------------------", flush=True)
-        return jsonify({'respuesta': 'Disculpa, ocurrió un detalle al conectar con el asistente. Inténtalo nuevamente en un momento.'}), 500
+            return jsonify({'respuesta': respuesta_ia.text})
+        except Exception as e:
+            if intento < max_reintentos:
+                time.sleep(1.0)
+                continue
+            print("--- ERROR REAL DE GEMINI TRAS REINTENTOS ---", flush=True)
+            print(e, flush=True)
+            print("---------------------------------------------", flush=True)
+            return jsonify({'respuesta': 'Disculpa, ocurrió un detalle al conectar con el asistente. Inténtalo nuevamente en un momento.'}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
