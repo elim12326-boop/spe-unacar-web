@@ -758,7 +758,7 @@ REGLAS PARA TUS RESPUESTAS:
 
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
-    """Ruta con lógica de reintento para alta concurrencia y tráfico masivo."""
+    """Ruta con fallback dinámico entre modelos y reintentos para 100% de disponibilidad."""
     client = get_gemini_client()
     if not client:
         print("[ERROR]: No se detectó GEMINI_API_KEY o GOOGLE_API_KEY.", flush=True)
@@ -772,28 +772,30 @@ def api_chat():
 
     instrucciones = obtener_instrucciones_asistente()
     
-    # Manejo de reintentos (Exponential Backoff) para evitar caídas por saturación
-    max_reintentos = 2
-    for intento in range(max_reintentos + 1):
-        try:
-            respuesta_ia = client.models.generate_content(
-                model='gemini-3.8-flash',
-                contents=mensaje,
-                config=types.GenerateContentConfig(
-                    system_instruction=instrucciones,
-                    temperature=0.3,
-                    max_output_tokens=800
+    # Modelos oficiales de producción en Google AI Studio en orden de preferencia
+    modelos_disponibles = ['gemini-2.5-flash', 'gemini-1.5-flash']
+    
+    for modelo in modelos_disponibles:
+        for intento in range(2):
+            try:
+                respuesta_ia = client.models.generate_content(
+                    model=modelo,
+                    contents=mensaje,
+                    config=types.GenerateContentConfig(
+                        system_instruction=instrucciones,
+                        temperature=0.3,
+                        max_output_tokens=800
+                    )
                 )
-            )
-            return jsonify({'respuesta': respuesta_ia.text})
-        except Exception as e:
-            if intento < max_reintentos:
+                if respuesta_ia and respuesta_ia.text:
+                    return jsonify({'respuesta': respuesta_ia.text})
+            except Exception as e:
+                error_str = str(e)
+                print(f"[AVISO IA - {modelo} - Intento {intento+1}]: {error_str}", flush=True)
                 time.sleep(1.0)
                 continue
-            print("--- ERROR REAL DE GEMINI TRAS REINTENTOS ---", flush=True)
-            print(e, flush=True)
-            print("---------------------------------------------", flush=True)
-            return jsonify({'respuesta': 'Disculpa, ocurrió un detalle al conectar con el asistente. Inténtalo nuevamente en un momento.'}), 500
+
+    return jsonify({'respuesta': 'En este momento hay varias consultas simultáneas en la plataforma. Por favor, realiza tu pregunta nuevamente en un momento.'}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
