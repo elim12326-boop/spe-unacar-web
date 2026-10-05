@@ -1190,6 +1190,12 @@
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;");
 
+            // Si hay un número impar de pares de asteriscos, se cierra automáticamente
+            let asteriscos = (html.match(/\*\*/g) || []).length;
+            if (asteriscos % 2 !== 0) {
+                html += '**';
+            }
+
             // Convertir negritas (**texto**)
             html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
